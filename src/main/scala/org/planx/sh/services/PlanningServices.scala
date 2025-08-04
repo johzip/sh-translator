@@ -1,11 +1,14 @@
 package org.planx.sh.services
 
+
 import org.planx.sh.parsing.hpdl.{HPDLDomainParser, HPDLProblemParser}
+import org.planx.sh.parsing.hpdl.JSONParser
 import org.planx.sh.problem.Domain
 import org.planx.sh.solution.Plan
 import org.planx.sh.utility.{Resources, Statistics}
 import org.planx.sh.solving.PlanGeneration
 import org.planx.sh.storing.ResourceStorer
+import spray.json.JsonParser
 
 import compat.Platform._
 import scala.collection.mutable.ListBuffer
@@ -116,5 +119,7 @@ object PlanningServices {
       case None => "Planning process failed to deliver result."
     }
     Statistics.print
+
+    new JSONParser(domain.tasks)
   }
 }
