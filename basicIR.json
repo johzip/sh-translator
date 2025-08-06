@@ -1,0 +1,41 @@
+{
+    "basic": {
+        "requirements": [
+            "strips",
+            "typing"
+        ],
+        "domain": {
+            "name": "basic",
+            "primitive_tasks": [
+                
+            ],
+            "compund_tasks": [
+                {
+                    "name": "swap",
+                    "parameters": [
+                        {
+                            "name": "param-name",
+                            "type": "thing"
+                        },
+                        {
+                            "name": "param-name",
+                            "type": "thing"
+                        }
+                    ],
+                    "subtasks": [
+                        {
+                        "name": "method-name",
+                        "preconditions": [],
+                        "tasks": []
+                    },
+                        {
+                        "name": "method-name",
+                        "preconditions": [],
+                        "tasks": []
+                    }
+                    ]
+                }
+            ]
+        }
+    }
+}

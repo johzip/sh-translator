@@ -18,6 +18,7 @@ lazy val shPlanningSystem = (project in file("."))
       "org.scalatest" %% "scalatest" % "3.3.0-SNAP3" % Test,
       "junit" % "junit" % "4.13.2" % Test,
       "org.scala-lang.modules" %% "scala-parser-combinators" % "1.0.2",
-      "com.typesafe.akka" %% "akka-http" % "10.1.15"
+      "com.typesafe.akka" %% "akka-http" % "10.1.15",
+      "org.json4s" %% "json4s-native" % "4.0.6"
   )
   )
