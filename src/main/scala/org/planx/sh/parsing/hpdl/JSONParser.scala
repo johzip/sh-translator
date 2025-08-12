@@ -1,7 +1,8 @@
 package org.planx.sh.parsing.hpdl
 
 import java.io.{File, PrintWriter}
-import org.planx.sh.problem.{Task, Problem, Operator}
+import org.planx.sh.problem.{Operator, Problem, Method, Task}
+import org.planx.sh.solving.Expression
 
 class JSONParser(tasks: List[Task], operators: List[Operator], domainName: String, problem: Problem) {
 
@@ -9,18 +10,29 @@ class JSONParser(tasks: List[Task], operators: List[Operator], domainName: Strin
     val primitiveTasks = tasks.filter(t => operators.exists(_._name == t._name))
     val compoundTasks = tasks.filter(t => !operators.exists(_._name == t._name))
 
+    val goalTasks = problem.goalTaskList.tasks
+    val goalTasksJson = goalTasks.map(gt => goalTaskToJSON(gt.asInstanceOf[Task])).mkString(",\n                    ")
+    val initStateJson = generateInitStateJSON()
+
     val primitiveTasksJson = primitiveTasks.map(taskToJSON).mkString(",\n                ")
     val compoundTasksJson = compoundTasks.map(compoundTaskToJSON).mkString(",\n                ")
 
-    val problemJson = generateProblemJSON()
-
-    s"""{
+  s"""{
     "$domainName": {
         "requirements": [
             "strips",
             "typing"
         ],
-        $problemJson,
+        "problem": {
+            "goal": {
+                "tasks": [
+                    $goalTasksJson
+                ]
+            },
+            "init": [
+                $initStateJson
+            ]
+        },
         "domain": {
             "name": "$domainName",
             "primitive_tasks": [
@@ -31,32 +43,23 @@ class JSONParser(tasks: List[Task], operators: List[Operator], domainName: Strin
             ]
         }
     }
-}"""
+  }"""
   }
 
-  private def generateProblemJSON(): String = {
-    val goalTasks = problem.goalTaskList.tasks
-    val goalTasksJson = goalTasks.map(goalTaskToJSON).mkString(",\n                    ")
-    val initStateJson = generateInitStateJSON()
 
-    s""""problem": {
-            "goal": {
-                "tasks": [
-                    $goalTasksJson
-                ]
-            },
-            "init": [
-                $initStateJson
-            ]
-        }"""
-  }
+  private def goalTaskToJSON(goalTask: Task): String = {
 
-  private def goalTaskToJSON(goalTask: Any): String = {
-    // Da goalTask vom Typ TaskUnifier ist, nicht Task
+    println("goalTask.parameters: "+goalTask.parameters)
+    println("goalTask._name: "+goalTask._name)
+    val goalTaskName = goalTask._name
+    val parameterStringList = loadParam(goalTask.parameters)
+
+
     s"""{
-                        "name": "swap",
-                        "parameters": $loadParam()
-                    }"""
+        "name": "$goalTaskName",
+        "parameters": [ $parameterStringList
+        ]
+    }"""
   }
 
 
@@ -68,13 +71,6 @@ class JSONParser(tasks: List[Task], operators: List[Operator], domainName: Strin
     paramJSON.toString().stripSuffix(",\n")
   }
 
-  private def paramToJSON(param: Any): String = {
-    s"""{
-                            "name": $name,
-                            "type": $type
-                        }"""
-  }
-
   private def taskToJSON(task: Task): String = {
     val correspondingOperator = operators.find(_._name == task._name)
     val parametersJson = task.parameters.map(paramToJSON).mkString(",\n                        ")
@@ -82,20 +78,20 @@ class JSONParser(tasks: List[Task], operators: List[Operator], domainName: Strin
     correspondingOperator match {
       case Some(op) =>
         s"""{
-                    "name": "${task._name}",
-                    "parameters": [
-                        $parametersJson
-                    ],
-                    "precondition": [],
-                    "effect": {}
-                }"""
+            "name": "${task._name}",
+            "parameters": [
+                $parametersJson
+            ],
+            "precondition": [],
+            "effect": {}
+        }"""
       case None =>
         s"""{
-                    "name": "${task._name}",
-                    "parameters": [
-                        $parametersJson
-                    ]
-                }"""
+            "name": "${task._name}",
+            "parameters": [
+                $parametersJson
+            ]
+        }"""
     }
   }
 
@@ -104,29 +100,72 @@ class JSONParser(tasks: List[Task], operators: List[Operator], domainName: Strin
     val methodsJson = task.methods.map(methodToJSON).mkString(",\n                        ")
 
     s"""{
-                    "name": "${task._name}",
-                    "parameters": [
-                        $parametersJson
-                    ],
-                    "subtasks": [
-                        $methodsJson
-                    ]
-                }"""
+        "name": "${task._name}",
+        "parameters": [
+            $parametersJson
+        ],
+        "methods": [
+            $methodsJson
+        ]
+    }"""
   }
 
-  private def methodToJSON(method: Any): String = {
+  private def methodToJSON(method: Method): String = {
+    val method_name = method.name
+    val preconditions = preconditionsToJSON()
+    val taskCalls = tasksCallToJSON()
     s"""{
-                        "name": $method_name,
-                        "preconditions": $loadPreconditions(),
-                        "tasks": $loadTasks()
-                    }"""
+        "name": $method_name,
+        "preconditions": $preconditions,
+        "tasks": $taskCalls
+    }"""
   }
 
   private def paramToJSON(param: Any): String = {
-    s"""{
-                            "name": $param_name,
-                            "type": $param_type
-                        }"""
+    param match {
+      case v: Var =>
+        s"""{
+          "name": "${v.name.name}",
+          "type": "${v._type}"
+      }"""
+      case c: Constant =>
+        s"""{
+          "name": "${c.c}",
+          "type": "constant"
+      }"""
+      case _ =>
+        s"""{
+          "name": "unknown",
+          "type": "unknown"
+      }"""
+    }
+  }
+
+  def preconditionsToJSON(preconditions: List[Expression]): String = {
+    preconditions.map { precondition =>
+      s"""{
+        "name": "$precondition_name",
+        "type": "$precondition_type"
+      }"""
+    }.mkString(",\n")
+  }
+
+
+  def tasksCallToJSON(taskCalls: List[Any]): String = {
+    tasks.map { task =>
+      val paramsJson = task.parameters.map { param =>
+        s"""{
+           |    "name": "${param.asInstanceOf[{def _name: String}]._name}",
+           |    "type": "${param.asInstanceOf[{def _type: String}]._type}"
+           |}""".stripMargin
+        }.mkString(",\n" + " " * 40)
+        s"""{
+           |    "primitive-task": "${task._name}",
+           |    "parameters": [
+           |        $paramsJson
+           |    ]
+           |}""".stripMargin
+    }.mkString(",\n" + " " * 32)
   }
 
   def writeToFile(filename: String = "tasks.json"): Unit = {
@@ -140,4 +179,16 @@ class JSONParser(tasks: List[Task], operators: List[Operator], domainName: Strin
       writer.close()
     }
   }
+
+  private def generateInitStateJSON(): String = {
+    s"""{
+       |    "name": "kiwi",
+       |    "type": "thing",
+       |    "var": {
+       |        "name": "have",
+       |        "value": true
+       |    }
+       |}""".stripMargin
+  }
+
 }
