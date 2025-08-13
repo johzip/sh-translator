@@ -1,8 +1,9 @@
 package org.planx.sh.parsing.hpdl
 
 import java.io.{File, PrintWriter}
-import org.planx.sh.problem.{Operator, Problem, Method, Task, Var, Constant, TaskList}
-import org.planx.sh.solving.{Expression, ExpressionAtomic, ExpressionAnd, ExpressionOr, ExpressionNot, ExpressionNil, Bindable}
+import org.planx.sh.problem.{Operator, Problem, Method, Task, Var, Constant, TaskList, Term, Predicate}
+
+import org.planx.sh.solving.{Expression, ExpressionAtomic, InstanceUnifier, ExpressionAnd, ExpressionOr, ExpressionNot, ExpressionNil, Bindable}
 
 class JSONParser(tasks: List[Task], operators: List[Operator], domainName: String, problem: Problem) {
 
@@ -61,7 +62,6 @@ class JSONParser(tasks: List[Task], operators: List[Operator], domainName: Strin
         ]
     }"""
   }
-
 
   private def loadParam(params: List[Any]): String = {
     val paramJSON = new StringBuilder
@@ -189,22 +189,44 @@ class JSONParser(tasks: List[Task], operators: List[Operator], domainName: Strin
     }
   }
 
+  private def termToJSON(term: Any): String = {
+    s"""{
+       |    "term": "${term.toString}",
+       |    "type": "${term.getClass.getSimpleName}"
+       |}""".stripMargin
+  }
 
   private def tasksCallToJSON(taskCalls: TaskList): String = {
-    tasks.map { task =>
-      val paramsJson = task.parameters.map { param =>
-        s"""{
-           |    "name": "${param.asInstanceOf[{def _name: String}]._name}",
-           |    "type": "${param.asInstanceOf[{def _type: String}]._type}"
-           |}""".stripMargin
-        }.mkString(",\n" + " " * 40)
-        s"""{
-           |    "primitive-task": "${task._name}",
-           |    "parameters": [
-           |        $paramsJson
-           |    ]
-           |}""".stripMargin
-    }.mkString(",\n" + " " * 32)
+    taskCalls.tasks.map { task =>
+      task match {
+        case predicate: org.planx.sh.problem.Predicate =>
+          val parametersJson = predicate.arguments.map(termToJSON).mkString(",\n" + " " * 16)
+          s"""{
+             |    "name": "${predicate.name}",
+             |    "type": "predicate",
+             |    "parameters": [
+             |        $parametersJson
+             |    ]
+             |}""".stripMargin
+        case instance: InstanceUnifier =>
+          val parametersJson = instance.arguments.map(termToJSON).mkString(",\n" + " " * 16)
+          s"""{
+             |    "name": "${instance.name}",
+             |    "type": "instance",
+             |    "parameters": [
+             |        $parametersJson
+             |    ]
+             |}""".stripMargin
+        case nestedTaskList: TaskList =>
+          tasksCallToJSON(nestedTaskList) // Rekursiver Aufruf für verschachtelte TaskLists
+        case _ =>
+          s"""{
+             |    "name": "unknown",
+             |    "type": "${task.getClass.getSimpleName}",
+             |    "parameters": []
+             |}""".stripMargin
+      }
+    }.mkString(",\n" + " " * 8)
   }
 
   def writeToFile(filename: String = "tasks.json"): Unit = {
