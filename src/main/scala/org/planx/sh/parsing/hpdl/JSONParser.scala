@@ -1,8 +1,8 @@
 package org.planx.sh.parsing.hpdl
 
 import java.io.{File, PrintWriter}
-import org.planx.sh.problem.{Operator, Problem, Method, Task}
-import org.planx.sh.solving.Expression
+import org.planx.sh.problem.{Operator, Problem, Method, Task, Var, Constant, TaskList}
+import org.planx.sh.solving.{Expression, ExpressionAtomic, ExpressionAnd, ExpressionOr, ExpressionNot, ExpressionNil, Bindable}
 
 class JSONParser(tasks: List[Task], operators: List[Operator], domainName: String, problem: Problem) {
 
@@ -112,8 +112,8 @@ class JSONParser(tasks: List[Task], operators: List[Operator], domainName: Strin
 
   private def methodToJSON(method: Method): String = {
     val method_name = method.name
-    val preconditions = preconditionsToJSON()
-    val taskCalls = tasksCallToJSON()
+    val preconditions = expressionToJSON(method.precondition)
+    val taskCalls = tasksCallToJSON(method.taskList)
     s"""{
         "name": $method_name,
         "preconditions": $preconditions,
@@ -141,17 +141,56 @@ class JSONParser(tasks: List[Task], operators: List[Operator], domainName: Strin
     }
   }
 
-  def preconditionsToJSON(preconditions: List[Expression]): String = {
-    preconditions.map { precondition =>
-      s"""{
-        "name": "$precondition_name",
-        "type": "$precondition_type"
+  def expressionToJSON(expression: Expression): String = {
+    expression match {
+      case atomic: ExpressionAtomic =>
+        val parameters = atomic.blueprint.arguments.map(paramToJSON).mkString(",")
+        s"""{
+        "type": "atomic",
+        "predicate": "${atomic.predicateName}",
+        "parameters": [$parameters]
       }"""
-    }.mkString(",\n")
+
+      case and: ExpressionAnd =>
+        val leftJson = expressionToJSON(and.left)
+        val rightJson = expressionToJSON(and.right)
+        s"""{
+        "type": "and",
+        "left": $leftJson,
+        "right": $rightJson
+      }"""
+
+      case or: ExpressionOr =>
+        val leftJson = expressionToJSON(or.left)
+        val rightJson = expressionToJSON(or.right)
+        s"""{
+        "type": "or",
+        "left": $leftJson,
+        "right": $rightJson
+      }"""
+
+      case not: ExpressionNot =>
+        val innerJson = expressionToJSON(not.precond)
+        s"""{
+        "type": "not",
+        "expression": $innerJson
+      }"""
+
+      case _: ExpressionNil =>
+        s"""{
+        "type": "nil"
+      }"""
+
+      case _ =>
+        s"""{
+        "type": "unknown",
+        "class": "${expression.getClass.getSimpleName}"
+      }"""
+    }
   }
 
 
-  def tasksCallToJSON(taskCalls: List[Any]): String = {
+  private def tasksCallToJSON(taskCalls: TaskList): String = {
     tasks.map { task =>
       val paramsJson = task.parameters.map { param =>
         s"""{
@@ -190,5 +229,4 @@ class JSONParser(tasks: List[Task], operators: List[Operator], domainName: Strin
        |    }
        |}""".stripMargin
   }
-
 }
