@@ -12,7 +12,10 @@ class JSONParser(tasks: List[Task], operators: List[Operator], domainName: Strin
     val compoundTasks = tasks.filter(t => !operators.exists(_._name == t._name))
 
     val goalTasks = problem.goalTaskList.tasks
-    val goalTasksJson = goalTasks.map(gt => goalTaskToJSON(gt.asInstanceOf[Task])).mkString(",\n                    ")
+    val goalTasksJson = goalTasks.map {
+      case task: Task => goalTaskToJSON(task)
+      case other => {}
+    }.mkString(",\n                    ")
     val initStateJson = generateInitStateJSON()
 
     val primitiveTasksJson = primitiveTasks.map(taskToJSON).mkString(",\n                ")
@@ -73,6 +76,7 @@ class JSONParser(tasks: List[Task], operators: List[Operator], domainName: Strin
 
   private def taskToJSON(task: Task): String = {
     val correspondingOperator = operators.find(_._name == task._name)
+    val preconditions = task.methods.map(method => expressionToJSON(method.precondition)).mkString(",\n                        ")
     val parametersJson = task.parameters.map(paramToJSON).mkString(",\n                        ")
 
     correspondingOperator match {
@@ -82,7 +86,7 @@ class JSONParser(tasks: List[Task], operators: List[Operator], domainName: Strin
             "parameters": [
                 $parametersJson
             ],
-            "precondition": [],
+            "precondition": $preconditions,
             "effect": {}
         }"""
       case None =>
@@ -115,9 +119,9 @@ class JSONParser(tasks: List[Task], operators: List[Operator], domainName: Strin
     val preconditions = expressionToJSON(method.precondition)
     val taskCalls = tasksCallToJSON(method.taskList)
     s"""{
-        "name": $method_name,
-        "preconditions": $preconditions,
-        "tasks": $taskCalls
+      "name": "$method_name",
+      "preconditions": $preconditions,
+      "tasks": $taskCalls
     }"""
   }
 
