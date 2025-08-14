@@ -4,6 +4,23 @@
             "strips",
             "typing"
         ],
+        "problem": {
+            "goal": {
+                "tasks": [
+                    ()
+                ]
+            },
+            "init": [
+                {
+                "name": "kiwi",
+                "type": "thing",
+                "var": {
+                    "name": "have",
+                    "value": true
+                }
+}
+            ]
+        },
         "domain": {
             "name": "basic",
             "primitive_tasks": [
@@ -11,31 +28,155 @@
             ],
             "compund_tasks": [
                 {
-                    "name": "swap",
-                    "parameters": [
+        "name": "swap",
+        "parameters": [
+            {
+          "name": "x",
+          "type": "thing"
+      },
                         {
-                            "name": "param-name",
-                            "type": "thing"
-                        },
+          "name": "y",
+          "type": "thing"
+      }
+        ],
+        "methods": [
+            {
+      "name": "have-x",
+      "preconditions": {
+        "type": "and",
+        "left": {
+        "type": "and",
+        "left": {
+        "type": "atomic",
+        "predicate": "have",
+        "parameters": [{
+          "name": "x",
+          "type": "thing"
+      }]
+      },
+        "right": {
+        "type": "not",
+        "expression": {
+        "type": "atomic",
+        "predicate": "have",
+        "parameters": [{
+          "name": "y",
+          "type": "thing"
+      }]
+      }
+      }
+      },
+        "right": {
+        "type": "and",
+        "left": {
+        "type": "atomic",
+        "predicate": "thing",
+        "parameters": [{
+          "name": "x",
+          "type": "thing"
+      }]
+      },
+        "right": {
+        "type": "atomic",
+        "predicate": "thing",
+        "parameters": [{
+          "name": "y",
+          "type": "thing"
+      }]
+      }
+      }
+      },
+      "tasks": {
+    "name": "drop",
+    "type": "predicate",
+    "parameters": [
+        {
+    "term": "?x",
+    "type": "Var"
+}
+    ]
+},
+        {
+    "name": "pickup",
+    "type": "predicate",
+    "parameters": [
+        {
+    "term": "?y",
+    "type": "Var"
+}
+    ]
+}
+    },
                         {
-                            "name": "param-name",
-                            "type": "thing"
-                        }
-                    ],
-                    "subtasks": [
-                        {
-                        "name": "method-name",
-                        "preconditions": [],
-                        "tasks": []
-                    },
-                        {
-                        "name": "method-name",
-                        "preconditions": [],
-                        "tasks": []
-                    }
-                    ]
-                }
+      "name": "have-y",
+      "preconditions": {
+        "type": "and",
+        "left": {
+        "type": "and",
+        "left": {
+        "type": "atomic",
+        "predicate": "have",
+        "parameters": [{
+          "name": "y",
+          "type": "thing"
+      }]
+      },
+        "right": {
+        "type": "not",
+        "expression": {
+        "type": "atomic",
+        "predicate": "have",
+        "parameters": [{
+          "name": "x",
+          "type": "thing"
+      }]
+      }
+      }
+      },
+        "right": {
+        "type": "and",
+        "left": {
+        "type": "atomic",
+        "predicate": "thing",
+        "parameters": [{
+          "name": "x",
+          "type": "thing"
+      }]
+      },
+        "right": {
+        "type": "atomic",
+        "predicate": "thing",
+        "parameters": [{
+          "name": "y",
+          "type": "thing"
+      }]
+      }
+      }
+      },
+      "tasks": {
+    "name": "drop",
+    "type": "predicate",
+    "parameters": [
+        {
+    "term": "?y",
+    "type": "Var"
+}
+    ]
+},
+        {
+    "name": "pickup",
+    "type": "predicate",
+    "parameters": [
+        {
+    "term": "?x",
+    "type": "Var"
+}
+    ]
+}
+    }
+        ]
+    }
             ]
         }
     }
-}
+  }
