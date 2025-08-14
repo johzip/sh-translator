@@ -1,21 +1,17 @@
 package org.planx.sh.parsing.hpdl
 
 import java.io.{File, PrintWriter}
-import org.planx.sh.problem.{Operator, Problem, Method, Task, Var, Constant, TaskList, Term, Predicate}
+import org.planx.sh.problem.{Axiom, Constant, Method, Operator, Predicate, Problem, Task, TaskList, Term, Var}
+import org.planx.sh.solving.{Bindable, Expression, ExpressionAnd, ExpressionAtomic, ExpressionNil, ExpressionNot, ExpressionOr, InstanceUnifier, TaskUnifier}
 
-import org.planx.sh.solving.{Expression, ExpressionAtomic, InstanceUnifier, ExpressionAnd, ExpressionOr, ExpressionNot, ExpressionNil, Bindable}
-
-class JSONParser(tasks: List[Task], operators: List[Operator], domainName: String, problem: Problem) {
+class JSONParser(tasks: List[Task], operators: List[Operator], axioms: List[Axiom],domainName: String, problem: Problem) {
 
   def generateJSON(): String = {
-    val primitiveTasks = tasks.filter(t => operators.exists(_._name == t._name))
+    val primitiveTasks = operators
     val compoundTasks = tasks.filter(t => !operators.exists(_._name == t._name))
 
-    val goalTasks = problem.goalTaskList.tasks
-    val goalTasksJson = goalTasks.map {
-      case task: Task => goalTaskToJSON(task)
-      case other => {}
-    }.mkString(",\n                    ")
+    val goalTasks = problem.goalTaskList
+    val goalTasksJson = tasksCallToJSON(problem.goalTaskList)
     val initStateJson = generateInitStateJSON()
 
     val primitiveTasksJson = primitiveTasks.map(taskToJSON).mkString(",\n                ")
@@ -51,21 +47,6 @@ class JSONParser(tasks: List[Task], operators: List[Operator], domainName: Strin
   }
 
 
-  private def goalTaskToJSON(goalTask: Task): String = {
-
-    println("goalTask.parameters: "+goalTask.parameters)
-    println("goalTask._name: "+goalTask._name)
-    val goalTaskName = goalTask._name
-    val parameterStringList = loadParam(goalTask.parameters)
-
-
-    s"""{
-        "name": "$goalTaskName",
-        "parameters": [ $parameterStringList
-        ]
-    }"""
-  }
-
   private def loadParam(params: List[Any]): String = {
     val paramJSON = new StringBuilder
     for (param <- params) {
@@ -74,24 +55,24 @@ class JSONParser(tasks: List[Task], operators: List[Operator], domainName: Strin
     paramJSON.toString().stripSuffix(",\n")
   }
 
-  private def taskToJSON(task: Task): String = {
-    val correspondingOperator = operators.find(_._name == task._name)
-    val preconditions = task.methods.map(method => expressionToJSON(method.precondition)).mkString(",\n                        ")
-    val parametersJson = task.parameters.map(paramToJSON).mkString(",\n                        ")
+  private def taskToJSON(primTask: Operator): String = {
+    val correspondingOperator = operators.find(_._name == primTask._name)
+    val precondition = expressionToJSON(primTask.precondition)
+    val parametersJson = primTask.parameters.map(paramToJSON).mkString(",\n                        ")
 
     correspondingOperator match {
       case Some(op) =>
         s"""{
-            "name": "${task._name}",
+            "name": "${primTask._name}",
             "parameters": [
                 $parametersJson
             ],
-            "precondition": $preconditions,
+            "precondition": $precondition,
             "effect": {}
         }"""
       case None =>
         s"""{
-            "name": "${task._name}",
+            "name": "${primTask._name}",
             "parameters": [
                 $parametersJson
             ]
@@ -245,6 +226,8 @@ class JSONParser(tasks: List[Task], operators: List[Operator], domainName: Strin
     }
   }
 
+  //TODO: Implement a method to generate the initial state JSON based on the problem's initial state.
+  // This is a placeholder implementation.
   private def generateInitStateJSON(): String = {
     s"""{
        |    "name": "kiwi",

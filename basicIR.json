@@ -7,24 +7,83 @@
         "problem": {
             "goal": {
                 "tasks": [
-                    ()
+                    {
+    "name": "swap",
+    "type": "predicate",
+    "parameters": [
+        {
+    "term": "banjo",
+    "type": "Constant"
+},
+                {
+    "term": "kiwi",
+    "type": "Constant"
+}
+    ]
+}
                 ]
             },
             "init": [
                 {
-                "name": "kiwi",
-                "type": "thing",
-                "var": {
-                    "name": "have",
-                    "value": true
-                }
+    "name": "kiwi",
+    "type": "thing",
+    "var": {
+        "name": "have",
+        "value": true
+    }
 }
             ]
         },
         "domain": {
             "name": "basic",
             "primitive_tasks": [
-                
+                {
+            "name": "drop",
+            "parameters": [
+                {
+          "name": "drop",
+          "type": "thing"
+      }
+            ],
+            "precondition": {
+        "type": "and",
+        "left": {
+        "type": "atomic",
+        "predicate": "have",
+        "parameters": [{
+          "name": "drop",
+          "type": "thing"
+      }]
+      },
+        "right": {
+        "type": "atomic",
+        "predicate": "thing",
+        "parameters": [{
+          "name": "drop",
+          "type": "thing"
+      }]
+      }
+      },
+            "effect": {}
+        },
+                {
+            "name": "pickup",
+            "parameters": [
+                {
+          "name": "pickup",
+          "type": "thing"
+      }
+            ],
+            "precondition": {
+        "type": "atomic",
+        "predicate": "thing",
+        "parameters": [{
+          "name": "pickup",
+          "type": "thing"
+      }]
+      },
+            "effect": {}
+        }
             ],
             "compund_tasks": [
                 {

@@ -120,6 +120,8 @@ object PlanningServices {
     }
     Statistics.print
 
-    new JSONParser(domain.tasks)
+
+    val jsonParser = new JSONParser(domain.tasks, domain.operators, domain.axioms,domainName, problem)
+    jsonParser.writeToFile("basicIR.json")
   }
 }
