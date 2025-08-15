@@ -226,8 +226,6 @@ class JSONParser(tasks: List[Task], operators: List[Operator], axioms: List[Axio
     }
   }
 
-  //TODO: Implement a method to generate the initial state JSON based on the problem's initial state.
-  //This is a placeholder implementation.
   private def generateInitStateJSON(init: State): String = {
     val stateItems = for {
       (atomName, container) <- init.atoms
