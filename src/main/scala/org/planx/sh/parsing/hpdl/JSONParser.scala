@@ -1,20 +1,20 @@
 package org.planx.sh.parsing.hpdl
 
 import java.io.{File, PrintWriter}
+import org.planx.sh.problem.{Add, Delete, EmptyEffect, ForallEffect, NumericAssignment}
 import org.planx.sh.problem.{Axiom, Constant, Method, Operator, Predicate, Problem, Task, TaskList, Term, Var}
 import org.planx.sh.solving.{Bindable, Expression, ExpressionAnd, ExpressionAtomic, ExpressionNil, ExpressionNot, ExpressionOr, InstanceUnifier, TaskUnifier}
 
 class JSONParser(tasks: List[Task], operators: List[Operator], axioms: List[Axiom],domainName: String, problem: Problem) {
 
   def generateJSON(): String = {
-    val primitiveTasks = operators
     val compoundTasks = tasks.filter(t => !operators.exists(_._name == t._name))
 
     val goalTasks = problem.goalTaskList
     val goalTasksJson = tasksCallToJSON(problem.goalTaskList)
     val initStateJson = generateInitStateJSON()
 
-    val primitiveTasksJson = primitiveTasks.map(taskToJSON).mkString(",\n                ")
+    val primitiveTasksJson = operators.map(taskToJSON).mkString(",\n                ")
     val compoundTasksJson = compoundTasks.map(compoundTaskToJSON).mkString(",\n                ")
 
   s"""{
@@ -55,10 +55,64 @@ class JSONParser(tasks: List[Task], operators: List[Operator], axioms: List[Axio
     paramJSON.toString().stripSuffix(",\n")
   }
 
+  private def effectToJSON (effect: Any): String = {
+    effect match {
+      case add: Add =>
+        val parametersJson = add.atom.arguments.map(paramToJSON).mkString(",")
+        s"""{
+        "type": "add",
+        "predicate": "${add.atom.name}",
+        "parameters": [$parametersJson]
+      }"""
+
+      case delete: Delete =>
+        val parametersJson = delete.atom.arguments.map(paramToJSON).mkString(",")
+        s"""{
+        "type": "delete",
+        "predicate": "${delete.atom.name}",
+        "parameters": [$parametersJson]
+      }"""
+
+      case assignment: NumericAssignment =>
+        s"""{
+        "type": "numeric_assignment",
+        "operation": "${assignment.name}",
+        "function": "${assignment.function_name}",
+        "value": ${assignment.function_value}
+      }"""
+
+      case forall: ForallEffect =>
+        val predicatesJson = forall.predicates.map(effectToJSON).mkString(",")
+        val expressionJson = expressionToJSON(forall.expr)
+        s"""{
+        "type": "forall",
+        "expression": $expressionJson,
+        "predicates": [$predicatesJson],
+        "add_list": ${forall.addList}
+      }"""
+
+      case _: EmptyEffect =>
+        s"""{
+        "type": "empty"
+      }"""
+
+      case _ =>
+        s"""{
+        "type": "unknown",
+        "class": "${effect.getClass.getSimpleName}"
+      }"""
+    }
+  }
+
   private def taskToJSON(primTask: Operator): String = {
     val correspondingOperator = operators.find(_._name == primTask._name)
     val precondition = expressionToJSON(primTask.precondition)
     val parametersJson = primTask.parameters.map(paramToJSON).mkString(",\n                        ")
+    val effectsJson = primTask.add.map(effectToJSON).mkString(",\n            ")
+    val effect = if (primTask.add.nonEmpty) s"[$effectsJson]" else "[]"
+
+    println("taskToJSON for task: " + primTask._name)
+    println(primTask.add)
 
     correspondingOperator match {
       case Some(op) =>
@@ -68,7 +122,7 @@ class JSONParser(tasks: List[Task], operators: List[Operator], axioms: List[Axio
                 $parametersJson
             ],
             "precondition": $precondition,
-            "effect": {}
+            "effect": $effect
         }"""
       case None =>
         s"""{
@@ -102,7 +156,9 @@ class JSONParser(tasks: List[Task], operators: List[Operator], axioms: List[Axio
     s"""{
       "name": "$method_name",
       "preconditions": $preconditions,
-      "tasks": $taskCalls
+      "tasks": [
+          $taskCalls
+      ]
     }"""
   }
 
