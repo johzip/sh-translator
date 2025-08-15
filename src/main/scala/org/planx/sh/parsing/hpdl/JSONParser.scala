@@ -108,11 +108,14 @@ class JSONParser(tasks: List[Task], operators: List[Operator], axioms: List[Axio
     val correspondingOperator = operators.find(_._name == primTask._name)
     val precondition = expressionToJSON(primTask.precondition)
     val parametersJson = primTask.parameters.map(paramToJSON).mkString(",\n                        ")
-    val effectsJson = primTask.add.map(effectToJSON).mkString(",\n            ")
-    val effect = if (primTask.add.nonEmpty) s"[$effectsJson]" else "[]"
-
-    println("taskToJSON for task: " + primTask._name)
-    println(primTask.add)
+    val effectsAddJson = primTask.add.map(effectToJSON).mkString(",\n            ")
+    val effectsDeleteJson = primTask.delete.map(effectToJSON).mkString(",\n            ")
+    val effect = (primTask.add.nonEmpty, primTask.delete.nonEmpty) match {
+      case (false, false) => "[]"
+      case (true, false)  => s"[$effectsAddJson]"
+      case (false, true)  => s"[$effectsDeleteJson]"
+      case (true, true)   => s"[$effectsAddJson, $effectsDeleteJson]"
+    }
 
     correspondingOperator match {
       case Some(op) =>
