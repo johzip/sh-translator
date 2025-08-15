@@ -1,8 +1,8 @@
 package org.planx.sh.parsing.hpdl
 
 import java.io.{File, PrintWriter}
-import org.planx.sh.problem.{Axiom, Constant, Method, Operator, Predicate, Problem, Task, TaskList, Term, Var}
-import org.planx.sh.solving.{Bindable, Expression, ExpressionAnd, ExpressionAtomic, ExpressionNil, ExpressionNot, ExpressionOr, InstanceUnifier, TaskUnifier}
+import org.planx.sh.problem.{ Axiom, Constant, Method, Operator, Predicate, Problem, Task, TaskList, Term, Var}
+import org.planx.sh.solving.{State ,Bindable, Expression, ExpressionAnd, ExpressionAtomic, ExpressionNil, ExpressionNot, ExpressionOr, InstanceUnifier, TaskUnifier}
 
 class JSONParser(tasks: List[Task], operators: List[Operator], axioms: List[Axiom],domainName: String, problem: Problem) {
 
@@ -12,7 +12,7 @@ class JSONParser(tasks: List[Task], operators: List[Operator], axioms: List[Axio
 
     val goalTasks = problem.goalTaskList
     val goalTasksJson = tasksCallToJSON(problem.goalTaskList)
-    val initStateJson = generateInitStateJSON()
+    val initStateJson = generateInitStateJSON(problem.state)
 
     val primitiveTasksJson = primitiveTasks.map(taskToJSON).mkString(",\n                ")
     val compoundTasksJson = compoundTasks.map(compoundTaskToJSON).mkString(",\n                ")
@@ -227,15 +227,20 @@ class JSONParser(tasks: List[Task], operators: List[Operator], axioms: List[Axio
   }
 
   //TODO: Implement a method to generate the initial state JSON based on the problem's initial state.
-  // This is a placeholder implementation.
-  private def generateInitStateJSON(): String = {
-    s"""{
-       |    "name": "kiwi",
-       |    "type": "thing",
-       |    "var": {
-       |        "name": "have",
-       |        "value": true
-       |    }
-       |}""".stripMargin
+  //This is a placeholder implementation.
+  private def generateInitStateJSON(init: State): String = {
+    val stateItems = for {
+      (atomName, container) <- init.atoms
+      arity <- container.byarity.keys
+      argumentsList <- container.byarity(arity)
+    } yield {
+      val parametersJson = argumentsList.map(arg => s""""$arg"""").mkString(", ")
+      s"""{
+        "predicate": "$atomName",
+        "parameters": [$parametersJson]
+    }"""
+    }
+
+    stateItems.mkString(",\n                ")
   }
 }
