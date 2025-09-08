@@ -17,7 +17,7 @@ class JSONParser(tasks: List[Task], operators: List[Operator], axioms: List[Axio
 
     val primitiveTasksJson = operators.map(taskToJSON).mkString(",\n                ")
     val compoundTasksJson = compoundTasks.map(compoundTaskToJSON).mkString(",\n                ")
-
+ //TODO: requirements is still dummy
   s"""{
     "$domainName": {
         "requirements": [
