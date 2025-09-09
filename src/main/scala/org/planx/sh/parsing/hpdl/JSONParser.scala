@@ -6,7 +6,7 @@ import org.planx.sh.problem.{Add, Delete, EmptyEffect, ForallEffect, NumericAssi
 import org.planx.sh.problem.{Axiom, Constant, Method, Operator, Predicate, Problem, Task, TaskList, Term, Var}
 import org.planx.sh.solving.{State ,Bindable, Expression, ExpressionAnd, ExpressionAtomic, ExpressionNil, ExpressionNot, ExpressionOr, InstanceUnifier, TaskUnifier}
 
-class JSONParser(tasks: List[Task], operators: List[Operator], axioms: List[Axiom],domainName: String, problem: Problem) {
+class JSONParser(requirements: List[String], tasks: List[Task], operators: List[Operator], axioms: List[Axiom],domainName: String, problem: Problem) {
 
   def generateJSON(): String = {
     val compoundTasks = tasks.filter(t => !operators.exists(_._name == t._name))
@@ -17,13 +17,10 @@ class JSONParser(tasks: List[Task], operators: List[Operator], axioms: List[Axio
 
     val primitiveTasksJson = operators.map(taskToJSON).mkString(",\n                ")
     val compoundTasksJson = compoundTasks.map(compoundTaskToJSON).mkString(",\n                ")
- //TODO: requirements is still dummy
+
   s"""{
     "$domainName": {
-        "requirements": [
-            "strips",
-            "typing"
-        ],
+        "requirements": [${requirements.map(r => s""""$r"""").mkString(",\n        ")}],
         "problem": {
             "goal": {
                 "tasks": [
@@ -61,47 +58,50 @@ class JSONParser(tasks: List[Task], operators: List[Operator], axioms: List[Axio
       case add: Add =>
         val parametersJson = add.atom.arguments.map(paramToJSON).mkString(",")
         s"""{
-        "type": "add",
-        "predicate": "${add.atom.name}",
-        "parameters": [$parametersJson]
-      }"""
+          "type": "predicate",
+          "name": "${add.atom.name}",
+          "parameters": [$parametersJson]
+        }"""
 
       case delete: Delete =>
         val parametersJson = delete.atom.arguments.map(paramToJSON).mkString(",")
         s"""{
-        "type": "delete",
-        "predicate": "${delete.atom.name}",
-        "parameters": [$parametersJson]
-      }"""
+          "type": "not",
+          "expression": [{
+            "type": "predicate",
+            "name": "${delete.atom.name}",
+            "parameters": [$parametersJson]
+          }]
+        }"""
 
       case assignment: NumericAssignment =>
         s"""{
-        "type": "numeric_assignment",
-        "operation": "${assignment.name}",
-        "function": "${assignment.function_name}",
-        "value": ${assignment.function_value}
-      }"""
+          "type": "numeric_assignment",
+          "operation": "${assignment.name}",
+          "function": "${assignment.function_name}",
+          "value": ${assignment.function_value}
+        }"""
 
       case forall: ForallEffect =>
         val predicatesJson = forall.predicates.map(effectToJSON).mkString(",")
         val expressionJson = expressionToJSON(forall.expr)
         s"""{
-        "type": "forall",
-        "expression": $expressionJson,
-        "predicates": [$predicatesJson],
-        "add_list": ${forall.addList}
-      }"""
+          "type": "forall",
+          "expression": $expressionJson,
+          "predicates": [$predicatesJson],
+          "add_list": ${forall.addList}
+        }"""
 
       case _: EmptyEffect =>
         s"""{
-        "type": "empty"
-      }"""
+          "type": "empty"
+        }"""
 
       case _ =>
         s"""{
-        "type": "unknown",
-        "class": "${effect.getClass.getSimpleName}"
-      }"""
+          "type": "unknown",
+          "class": "${effect.getClass.getSimpleName}"
+        }"""
     }
   }
 
@@ -191,46 +191,46 @@ class JSONParser(tasks: List[Task], operators: List[Operator], axioms: List[Axio
       case atomic: ExpressionAtomic =>
         val parameters = atomic.blueprint.arguments.map(paramToJSON).mkString(",")
         s"""{
-        "type": "atomic",
-        "predicate": "${atomic.predicateName}",
-        "parameters": [$parameters]
-      }"""
+          "type": "predicate",
+          "name": "${atomic.predicateName}",
+          "parameters": [$parameters]
+        }"""
 
       case and: ExpressionAnd =>
         val leftJson = expressionToJSON(and.left)
         val rightJson = expressionToJSON(and.right)
         s"""{
-        "type": "and",
-        "left": $leftJson,
-        "right": $rightJson
-      }"""
+          "type": "and",
+          "left": $leftJson,
+          "right": $rightJson
+        }"""
 
       case or: ExpressionOr =>
         val leftJson = expressionToJSON(or.left)
         val rightJson = expressionToJSON(or.right)
         s"""{
-        "type": "or",
-        "left": $leftJson,
-        "right": $rightJson
-      }"""
+          "type": "or",
+          "left": $leftJson,
+          "right": $rightJson
+        }"""
 
       case not: ExpressionNot =>
         val innerJson = expressionToJSON(not.precond)
         s"""{
-        "type": "not",
-        "expression": $innerJson
-      }"""
+          "type": "not",
+          "expression": $innerJson
+        }"""
 
       case _: ExpressionNil =>
         s"""{
-        "type": "nil"
-      }"""
+          "type": "nil"
+        }"""
 
       case _ =>
         s"""{
-        "type": "unknown",
-        "class": "${expression.getClass.getSimpleName}"
-      }"""
+          "type": "unknown",
+          "class": "${expression.getClass.getSimpleName}"
+        }"""
     }
   }
 
@@ -294,11 +294,25 @@ class JSONParser(tasks: List[Task], operators: List[Operator], axioms: List[Axio
     } yield {
       val parametersJson = argumentsList.map(arg => s""""$arg"""").mkString(", ")
       s"""{
-        "predicate": "$atomName",
-        "parameters": [$parametersJson]
-    }"""
+        "name": "$atomName",
+        "parameters": [$parametersJson],
+        "type": "predicate"
+      }"""
     }
-
     stateItems.mkString(",\n                ")
   }
 }
+// requiremnts mapping, since currently we print for example: NP for negative-preconditions
+//val requirementMap = Map(
+//  "S" -> ":strips",
+//  "T" -> ":typing",
+//  "NP" -> ":negative-preconditions",
+//  "DP" -> ":disjunctive-preconditions",
+//  "E" -> ":equality",
+//  "UP" -> ":universal-preconditions",
+//  "F" -> ":fluents",
+//  "NF" -> ":numeric-fluents",
+//  "CE" -> ":conditional-effects"
+//)
+//to access: val longVersions = domain.requirements.map(req => requirementMap.getOrElse(req, req))
+

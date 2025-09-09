@@ -121,7 +121,7 @@ object PlanningServices {
     Statistics.print
 
 
-    val jsonParser = new JSONParser(domain.tasks, domain.operators, domain.axioms,domainName, problem)
+    val jsonParser = new JSONParser(domain.requirements, domain.tasks, domain.operators, domain.axioms, domainName, problem)
     val fileName = domainName + "_IR.json"
     jsonParser.writeToFile(fileName)
   }
