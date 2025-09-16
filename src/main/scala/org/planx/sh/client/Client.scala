@@ -1,6 +1,7 @@
 package org.planx.sh.client
 
 import org.planx.sh.services.PlanningServices
+import org.planx.sh.parsing.hpdl.FromJSONParser
 
 object Client extends App {
   //PlanningServices.planWithGivenDomainAndProblemNamePrintPlans("satellite", "problem", 1)
@@ -11,12 +12,16 @@ object Client extends App {
 
   //PlanningServices.planWithGivenDomainAndProblemNamePrintPlans("dwr", "problem", 1)
 
-  PlanningServices.planWithGivenDomainAndProblemNamePrintPlans("deployment", "p-dashboard", 1)
+  //PlanningServices.planWithGivenDomainAndProblemNamePrintPlans("deployment", "p-dashboard", 1)
 
   //PlanningServices.planWithGivenDomainAndProblemNamePrintPlans("cafeteria", "problem", 1)
 
-  //PlanningServices.planWithGivenDomainAndProblemNamePrintPlans("blocksworld", "problem", 1)
+  PlanningServices.planWithGivenDomainAndProblemNamePrintPlans("blocksworld", "problem", 1)
 
   //PlanningServices.planWithGivenDomainAndProblemNamePrintPlans("basic", "problem", 1)
 
+  val filename = if (args.nonEmpty) args(0) else "blocksworld_IR.json"
+  val parser = new FromJSONParser()
+  val result = parser.parseFile(filename)
+  println(result)
 }

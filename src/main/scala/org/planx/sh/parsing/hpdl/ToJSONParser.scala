@@ -6,7 +6,7 @@ import org.planx.sh.problem.{Add, Delete, EmptyEffect, ForallEffect, NumericAssi
 import org.planx.sh.problem.{Axiom, Constant, Method, Operator, Predicate, Problem, Task, TaskList, Term, Var}
 import org.planx.sh.solving.{State ,Bindable, Expression, ExpressionAnd, ExpressionAtomic, ExpressionNil, ExpressionNot, ExpressionOr, InstanceUnifier, TaskUnifier}
 
-class JSONParser(requirements: List[String], tasks: List[Task], operators: List[Operator], axioms: List[Axiom],domainName: String, problem: Problem) {
+class ToJSONParser(requirements: List[String], tasks: List[Task], operators: List[Operator], axioms: List[Axiom], domainName: String, problem: Problem) {
 
   def generateJSON(): String = {
     val compoundTasks = tasks.filter(t => !operators.exists(_._name == t._name))
