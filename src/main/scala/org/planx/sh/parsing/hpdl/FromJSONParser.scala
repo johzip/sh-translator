@@ -39,13 +39,18 @@ class FromJSONParser {
 
     val domain = Domain(name = domainName, requirements = domainRequirements, types = Nil, predicates = Nil, functions = Nil, _operators = Nil, uncoupledTasks = Nil, axioms = Nil)
     //TODO: missing ProblemName (is it a Problem?)
-    val problem = Problem(name = "problem", domainName = domain.name, requirements = problemRequirements, objects = Objects(objects= Nil), state = problemInitState, goalTaskList = TaskList(ordering = "", tasks = List()))
+    //TODO: missing Objects
+    val problem = Problem(name = "problem", domainName = domain.name, requirements = problemRequirements, objects = Objects(objects= Nil), state = problemInitState, goalTaskList = problemGoalTasks)
     testResult(domain, problem, domainToCompare, problemToCompare)
     (domain, problem)
   }
 
-  testResult(domain: Domain, problem: Problem, domainToCompare: Domain, problemToCompare: Problem): Boolean = {
+  private def testResult(domain: Domain, problem: Problem, domainToCompare: Domain, problemToCompare: Problem): Boolean = {
     // Implement comparison logic here
+    println("goalTaskList NEW: ")
+    println(problem.goalTaskList)
+    println("goalTaskList ORIGINAL: ")
+    println(problemToCompare.goalTaskList)
     true
   }
 
@@ -75,10 +80,35 @@ class FromJSONParser {
       if (typ == "predicate") {
         state.add(name, parameters)
       }
-      // Erweiterung für andere Typen (z.B. Funktionen) möglich
     }
     state
   }
 
-  private def buildProblemGoalTasks(problemJson: JsObject): TaskList = {TaskList(ordering = "", tasks = List.empty )}
+  private def buildProblemGoalTasks(problemGoalJson: JsObject): TaskList = {
+    //TODO: Each Task is a Predicate not just Task
+    //val ordering = problemGoalJson.fields.get("ordering").map(_.convertTo[String]).getOrElse("")
+    val tasksJson = problemGoalJson.fields.get("tasks").map(_.convertTo[List[JsObject]]).getOrElse(Nil)
+    val tasks = tasksJson.map { taskJson =>
+      val name = taskJson.fields("name").convertTo[String]
+      val parametersJson = taskJson.fields("parameters").convertTo[List[JsObject]]
+      val parameters: List[Term] = parametersJson.map { paramJson =>
+        val term = paramJson.fields("term").convertTo[String]
+        val typ = paramJson.fields("type").convertTo[String]
+        typ match {
+          case "Constant" => Constant(term)
+          case "Var"      => Var(Symbol(term))
+          case _          => Constant(term)
+        }
+      }
+      val task = new Task(){
+        _name = name
+        parameters = parameters
+      }
+      task
+    }
+    //TODO: Nil should be List of Parameters
+    val taskUnifiers: List[TaskUnifier] = tasks.map(_.apply(Nil))
+    //TODO: add ordering, unordered is a placeholder
+    TaskList(ordering = "unordered", tasks = taskUnifiers)
+  }
 }

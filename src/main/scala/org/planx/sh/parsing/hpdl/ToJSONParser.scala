@@ -18,6 +18,7 @@ class ToJSONParser(domain: Domain, problem: Problem) {
     val compoundTasks = tasks.filter(t => !operators.exists(_._name == t._name))
     val goalTasks = problem.goalTaskList
     val goalTasksJson = tasksCallToJSON(problem.goalTaskList)
+    //TODO: ordering for goalTasks have two keywords: sequence or unordered does this need to be added?
     val initStateJson = generateInitStateJSON(problem.state)
 
     val primitiveTasksJson = operators.map(taskToJSON).mkString(",\n                ")

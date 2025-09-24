@@ -102,12 +102,12 @@ object PlanningServices {
     val domainPath = Resources.getDomainPath(domainName)
 
     val start_time = currentTime
-    val domain = HPDLDomainParser.processDomainFileToObject(domainPath)
-    val problem = HPDLProblemParser.processProblemFileToObject(Resources.getProblemPath(domainName, problemName))
+    var domain = HPDLDomainParser.processDomainFileToObject(domainPath)
+    var problem = HPDLProblemParser.processProblemFileToObject(Resources.getProblemPath(domainName, problemName))
     Statistics.parsingTime = (currentTime - start_time)
 
-    val state = problem.state
-    val goal = domain.preprocessGoalTaskList(problem.goalTaskList)
+    var state = problem.state
+    var goal = domain.preprocessGoalTaskList(problem.goalTaskList)
 
     PlanGeneration(state, domain.tasks, domain.operators).process(goal, numberOfPlans) match {
       case Some(plans) =>
@@ -127,7 +127,23 @@ object PlanningServices {
 
     val fromJSONparser = new FromJSONParser()
     val result = fromJSONparser.parseFile(fileName, domain, problem)
-    println(result)
+    domain = result._1
+    problem = result._2
+    Statistics.parsingTime = (currentTime - start_time)
+
+    state = problem.state
+    //goal = domain.preprocessGoalTaskList(problem.goalTaskList)
+
+    //PlanGeneration(state, domain.tasks, domain.operators).process(goal, numberOfPlans) match {
+    //  case Some(plans) =>
+    //    for ((p, i) <- plans.reverse.zipWithIndex) {
+    //      println("Plan %d:".format(i + 1))
+    //      p.print
+    //      println
+    //    }
+    //  case None => "Planning process failed to deliver result."
+    //}
+    //Statistics.print
 
   }
 }
