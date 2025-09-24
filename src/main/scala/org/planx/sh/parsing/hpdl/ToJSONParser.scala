@@ -4,13 +4,12 @@ import java.io.{File, PrintWriter}
 
 import org.planx.sh.problem.{Add, Delete, EmptyEffect, ForallEffect, NumericAssignment}
 import org.planx.sh.problem.{Axiom, Constant, Method, Operator, Predicate, Problem, Task, TaskList, Term, Var}
-import org.planx.sh.solving.{State ,Bindable, Expression, ExpressionAnd, ExpressionAtomic, ExpressionNil, ExpressionNot, ExpressionOr, InstanceUnifier, TaskUnifier}
+import org.planx.sh.solving.{State, Bindable, Expression, ExpressionAnd, ExpressionAtomic, ExpressionNil, ExpressionNot, ExpressionOr, InstanceUnifier, TaskUnifier}
 
 class ToJSONParser(requirements: List[String], tasks: List[Task], operators: List[Operator], axioms: List[Axiom], domainName: String, problem: Problem) {
 
   def generateJSON(): String = {
     val compoundTasks = tasks.filter(t => !operators.exists(_._name == t._name))
-
     val goalTasks = problem.goalTaskList
     val goalTasksJson = tasksCallToJSON(problem.goalTaskList)
     val initStateJson = generateInitStateJSON(problem.state)
@@ -36,7 +35,7 @@ class ToJSONParser(requirements: List[String], tasks: List[Task], operators: Lis
             "primitive_tasks": [
                 $primitiveTasksJson
             ],
-            "compund_tasks": [
+            "compound_tasks": [
                 $compoundTasksJson
             ]
         }
