@@ -20,8 +20,5 @@ object Client extends App {
 
   //PlanningServices.planWithGivenDomainAndProblemNamePrintPlans("basic", "problem", 1)
 
-  val filename = if (args.nonEmpty) args(0) else "blocksworld_IR.json"
-  val parser = new FromJSONParser()
-  val result = parser.parseFile(filename)
-  println(result)
+
 }

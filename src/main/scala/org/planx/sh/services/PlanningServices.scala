@@ -1,8 +1,8 @@
 package org.planx.sh.services
 
 
-import org.planx.sh.parsing.hpdl.{HPDLDomainParser, HPDLProblemParser}
-import org.planx.sh.parsing.hpdl.JSONParser
+import org.planx.sh.client.Client.args
+import org.planx.sh.parsing.hpdl.{FromJSONParser, HPDLDomainParser, HPDLProblemParser, ToJSONParser}
 import org.planx.sh.problem.Domain
 import org.planx.sh.solution.Plan
 import org.planx.sh.utility.{Resources, Statistics}
@@ -120,9 +120,14 @@ object PlanningServices {
     }
     Statistics.print
 
-
-    val jsonParser = new JSONParser(domain.requirements, domain.tasks, domain.operators, domain.axioms, domainName, problem)
+    val jsonParser = new ToJSONParser(domain, problem)
+    //val jsonParser = new ToJSONParser(domain.requirements, domain.tasks, domain.operators, domain.axioms, domainName, problem)
     val fileName = domainName + "_IR.json"
     jsonParser.writeToFile(fileName)
+
+    val fromJSONparser = new FromJSONParser()
+    val result = fromJSONparser.parseFile(fileName, domain, problem)
+    println(result)
+
   }
 }

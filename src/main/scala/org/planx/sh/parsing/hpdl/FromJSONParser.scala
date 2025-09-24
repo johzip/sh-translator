@@ -11,7 +11,7 @@ import org.planx.sh.solving.{Bindable, Expression, ExpressionAnd, ExpressionAtom
 
 class FromJSONParser {
 
-  def parseFile(filename: String): (String, List[String], Problem, List[Operator], List[Task]) = {
+  def parseFile(filename: String, domainToCompare: Domain, problemToCompare: Problem): (Domain, Problem) = {
     val source = Source.fromFile(filename)
     val jsonStr = try source.mkString finally source.close()
     val json = jsonStr.parseJson.asJsObject
@@ -39,9 +39,16 @@ class FromJSONParser {
 
     val domain = Domain(name = domainName, requirements = domainRequirements, types = Nil, predicates = Nil, functions = Nil, _operators = Nil, uncoupledTasks = Nil, axioms = Nil)
     //TODO: missing ProblemName (is it a Problem?)
-    val problem = Problem(name = "", domainName = domain.name, requirements = Nil, objects = Objects(objects= Nil), state = State(atoms = scala.collection.mutable.Map.empty), goalTaskList = TaskList(ordering = "", tasks = List()))
-    (domain.name, domain.requirements, null, Nil, Nil)
+    val problem = Problem(name = "problem", domainName = domain.name, requirements = problemRequirements, objects = Objects(objects= Nil), state = problemInitState, goalTaskList = TaskList(ordering = "", tasks = List()))
+    testResult(domain, problem, domainToCompare, problemToCompare)
+    (domain, problem)
   }
+
+  testResult(domain: Domain, problem: Problem, domainToCompare: Domain, problemToCompare: Problem): Boolean = {
+    // Implement comparison logic here
+    true
+  }
+
 
   private def buildDomainTypes(domainJson: JsObject): List[DomainType] = { List.empty }
 
@@ -59,7 +66,19 @@ class FromJSONParser {
 
   private def buildProblemObjects(problemJson: JsObject): Objects = {Objects(objects= Nil)}
 
-  private def buildProblemInitState(problemJson: List[JsObject]): State = { State(atoms = scala.collection.mutable.Map.empty) }
+  private def buildProblemInitState(problemInitJson: List[JsObject]): State = {
+    val state = State(atoms = scala.collection.mutable.Map.empty)
+    for (entry <- problemInitJson) {
+      val name = entry.fields("name").convertTo[String]
+      val parameters = entry.fields("parameters").convertTo[List[String]].toArray
+      val typ = entry.fields("type").convertTo[String]
+      if (typ == "predicate") {
+        state.add(name, parameters)
+      }
+      // Erweiterung für andere Typen (z.B. Funktionen) möglich
+    }
+    state
+  }
 
   private def buildProblemGoalTasks(problemJson: JsObject): TaskList = {TaskList(ordering = "", tasks = List.empty )}
 }
