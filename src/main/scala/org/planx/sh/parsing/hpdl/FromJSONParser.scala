@@ -22,24 +22,23 @@ class FromJSONParser {
     val domainJson = fullJson.fields("domain").asJsObject
     val problemJson = fullJson.fields("problem").asJsObject
 
-    val domainRequirements = fullJson.fields("requirements").convertTo[List[String]]
+    val domainRequirements = domainJson.fields("requirements").convertTo[List[String]]
+    val problemRequirements = problemJson.fields("requirements").convertTo[List[String]]
 
     val domaintypes = buildDomainTypes(domainJson)
     val domainPredicates = buildDomainPredicates(domainJson)
     val domainFunctions = buildDomainFunctions(domainJson)
-    val domainOperators = buildDomainOperators(domainJson.fields("primitive_tasks").asJsObject)
-    val domainTasks = buildDomainTasks(domainJson.fields("compound_tasks").asJsObject)
+    val domainOperators = buildDomainOperators(domainJson.fields("primitive_tasks").convertTo[List[JsObject]])
+    val domainTasks = buildDomainTasks(domainJson.fields("compound_tasks").convertTo[List[JsObject]])
     val domainAxioms = buildDomainAxioms(domainJson)
 
-    val problemRequirements = buildProblemRequirements(problemJson)
     val problemObjects = buildProblemObjects(problemJson)
-    val problemInitState = buildProblemInitState(problemJson.fields("init").asJsObject)
-    val problemGoalTasks = buildProblemGoalTasks(problemJson.fields("goal").asJsObject)
+    val problemInitState = buildProblemInitState(problemJson.fields("init").convertTo[List[JsObject]])
+    val problemGoalTasks = buildProblemGoalTasks(problemJson.fields("goal").convertTo[JsObject])
 
 
     val domain = Domain(name = domainName, requirements = domainRequirements, types = Nil, predicates = Nil, functions = Nil, _operators = Nil, uncoupledTasks = Nil, axioms = Nil)
     //TODO: missing ProblemName (is it a Problem?)
-    //TODO: missing Problem Requirements there is a difference between domain and problem requirements
     val problem = Problem(name = "", domainName = domain.name, requirements = Nil, objects = Objects(objects= Nil), state = State(atoms = scala.collection.mutable.Map.empty), goalTaskList = TaskList(ordering = "", tasks = List()))
     (domain.name, domain.requirements, null, Nil, Nil)
   }
@@ -50,9 +49,9 @@ class FromJSONParser {
 
   private def buildDomainFunctions(domainJson: JsObject): List[Function] = { List.empty }
 
-  private def buildDomainOperators(domainJson: JsObject): List[DomainOperator] = { List.empty }
+  private def buildDomainOperators(domainJson: List[JsObject]): List[DomainOperator] = { List.empty }
 
-  private def buildDomainTasks(domainJson: JsObject): List[DomainTask] = { List.empty }
+  private def buildDomainTasks(domainJson: List[JsObject]): List[DomainTask] = { List.empty }
 
   private def buildDomainAxioms(domainJson: JsObject): List[Axiom] = { List.empty }
 
@@ -60,7 +59,7 @@ class FromJSONParser {
 
   private def buildProblemObjects(problemJson: JsObject): Objects = {Objects(objects= Nil)}
 
-  private def buildProblemInitState(problemJson: JsObject): State = { State(atoms = scala.collection.mutable.Map.empty) }
+  private def buildProblemInitState(problemJson: List[JsObject]): State = { State(atoms = scala.collection.mutable.Map.empty) }
 
   private def buildProblemGoalTasks(problemJson: JsObject): TaskList = {TaskList(ordering = "", tasks = List.empty )}
 }
