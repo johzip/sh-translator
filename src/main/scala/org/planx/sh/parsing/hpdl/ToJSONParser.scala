@@ -3,12 +3,18 @@ package org.planx.sh.parsing.hpdl
 import java.io.{File, PrintWriter}
 
 import org.planx.sh.problem.{Add, Delete, EmptyEffect, ForallEffect, NumericAssignment}
-import org.planx.sh.problem.{Axiom, Constant, Method, Operator, Predicate, Problem, Task, TaskList, Term, Var}
+import org.planx.sh.problem.{Axiom, Constant, Method, Operator, Predicate, Problem, Domain, Task, TaskList, Term, Var}
 import org.planx.sh.solving.{State, Bindable, Expression, ExpressionAnd, ExpressionAtomic, ExpressionNil, ExpressionNot, ExpressionOr, InstanceUnifier, TaskUnifier}
 
-class ToJSONParser(requirements: List[String], tasks: List[Task], operators: List[Operator], axioms: List[Axiom], domainName: String, problem: Problem) {
+class ToJSONParser(domain: Domain, problem: Problem) {
+  val operators = domain.operators
 
   def generateJSON(): String = {
+    val requirements = domain.requirements
+    val tasks = domain.tasks
+
+    val domainName = domain.name
+
     val compoundTasks = tasks.filter(t => !operators.exists(_._name == t._name))
     val goalTasks = problem.goalTaskList
     val goalTasksJson = tasksCallToJSON(problem.goalTaskList)
@@ -17,10 +23,11 @@ class ToJSONParser(requirements: List[String], tasks: List[Task], operators: Lis
     val primitiveTasksJson = operators.map(taskToJSON).mkString(",\n                ")
     val compoundTasksJson = compoundTasks.map(compoundTaskToJSON).mkString(",\n                ")
 
+
   s"""{
     "$domainName": {
-        "requirements": [${requirements.map(r => s""""$r"""").mkString(",\n        ")}],
         "problem": {
+            "requirements": [${problem.requirements.map(r => s""""$r"""").mkString(",\n        ")}],
             "goal": {
                 "tasks": [
                     $goalTasksJson
@@ -31,6 +38,7 @@ class ToJSONParser(requirements: List[String], tasks: List[Task], operators: Lis
             ]
         },
         "domain": {
+            "requirements": [${domain.requirements.map(r => s""""$r"""").mkString(",\n        ")}],
             "name": "$domainName",
             "primitive_tasks": [
                 $primitiveTasksJson
