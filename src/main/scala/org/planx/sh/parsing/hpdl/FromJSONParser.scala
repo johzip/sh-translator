@@ -31,7 +31,7 @@ class FromJSONParser {
     val domainFunctions = buildDomainFunctions(domainJson)
     val domainAxioms = buildDomainAxioms(domainJson)
 
-    //TODO: implement domainOperators and domainTasks
+    //TODO: implement domainTasks
     val domainOperators = buildDomainOperators(domainJson.fields("primitive_tasks").convertTo[List[JsObject]])
     val domainTasks = buildDomainTasks(domainJson.fields("compound_tasks").convertTo[List[JsObject]])
 
@@ -50,28 +50,6 @@ class FromJSONParser {
 
   private def testResult(domain: Domain, problem: Problem, domainToCompare: Domain, problemToCompare: Problem): Boolean = {
     // Implement comparison logic here
-    println("domain primitive tasks NEW: ")
-    domain.operators.foreach { op =>
-      println(s"Name: ${op._name}")
-      println(s"Parameter: ${op.parameters}")
-      println(s"Precondition: ${op.precondition}")
-      println(s"Add-Effect: ${op.add}")
-      println(s"Delete-Effect: ${op.delete}")
-      println(s"Assignment: ${op.assignment}")
-      println(s"Cost: ${op.cost}")
-      println("-----")
-    }
-    println("domain primitive tasks ORIGINAL: ")
-    domainToCompare.operators.foreach { op =>
-      println(s"Name: ${op._name}")
-      println(s"Parameter: ${op.parameters}")
-      println(s"Precondition: ${op.precondition}")
-      println(s"Add-Effect: ${op.add}")
-      println(s"Delete-Effect: ${op.delete}")
-      println(s"Assignment: ${op.assignment}")
-      println(s"Cost: ${op.cost}")
-      println("-----")
-    }
     true
   }
 
@@ -80,19 +58,20 @@ class FromJSONParser {
       val name = obj.fields("name").convertTo[String]
       val parametersJson = obj.fields("parameters").convertTo[List[JsObject]]
       val parameters: List[Term] = buildParametersFromJSON(parametersJson)
-      //TODO: test precondition parsing
-      val precondition = buildPreconditionFromJSON(obj.fields("precondition").asJsObject())
+      val precondition: Expression = buildPreconditionFromJSON(obj.fields("precondition").asJsObject())
+
       val effects = obj.fields.get("effect").map(_.convertTo[List[JsObject]]).getOrElse(Nil)
-      //TODO: doesn't work yet
       val add: List[Add] = effects.collect {
-        case eff if eff.fields.get("type").contains(JsString("add")) =>
-          Add(buildPredicateFromJson(eff.fields("predicate").asJsObject))
+        case eff if eff.fields.get("type").contains(JsString("predicate")) =>
+          Add(buildPredicateFromJson(eff))
       }
-      //TODO: doesn't work yet
       val delete: List[Delete] = effects.collect {
-        case eff if eff.fields.get("type").contains(JsString("delete")) =>
-          Delete(buildPredicateFromJson(eff.fields("predicate").asJsObject))
-      }
+        case eff if eff.fields.get("type").contains(JsString("not")) =>
+          val exprList = eff.fields("expression").convertTo[List[JsObject]]
+          exprList.map { inner =>
+            Delete(buildPredicateFromJson(inner))
+          }
+      }.flatten
 
       DomainOperator(
         name = name,
