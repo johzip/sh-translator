@@ -84,31 +84,27 @@ class FromJSONParser {
     state
   }
 
+  private def buildPredicateFromJson(predicateJson: JsObject): Predicate = {
+    val name = predicateJson.fields("name").convertTo[String]
+    val parametersJson = predicateJson.fields("parameters").convertTo[List[JsObject]]
+    val parameters: List[Term] = parametersJson.map { paramJson =>
+      val term = paramJson.fields("term").convertTo[String]
+      val typ = paramJson.fields("type").convertTo[String]
+      typ match {
+        case "Constant" => Constant(term)
+        case "Var"      => Var(Symbol(term))
+        case _          => Constant(term)
+      }
+    }
+    Predicate(name, parameters)
+
+  }
+
   private def buildProblemGoalTasks(problemGoalJson: JsObject): TaskList = {
-    //TODO: Each Task is a Predicate not just Task
     //val ordering = problemGoalJson.fields.get("ordering").map(_.convertTo[String]).getOrElse("")
     val tasksJson = problemGoalJson.fields.get("tasks").map(_.convertTo[List[JsObject]]).getOrElse(Nil)
-    val tasks = tasksJson.map { taskJson =>
-      val name = taskJson.fields("name").convertTo[String]
-      val parametersJson = taskJson.fields("parameters").convertTo[List[JsObject]]
-      val parameters: List[Term] = parametersJson.map { paramJson =>
-        val term = paramJson.fields("term").convertTo[String]
-        val typ = paramJson.fields("type").convertTo[String]
-        typ match {
-          case "Constant" => Constant(term)
-          case "Var"      => Var(Symbol(term))
-          case _          => Constant(term)
-        }
-      }
-      val task = new Task(){
-        _name = name
-        parameters = parameters
-      }
-      task
-    }
-    //TODO: Nil should be List of Parameters
-    val taskUnifiers: List[TaskUnifier] = tasks.map(_.apply(Nil))
-    //TODO: add ordering, unordered is a placeholder
-    TaskList(ordering = "unordered", tasks = taskUnifiers)
+    val tasks = tasksJson.map { buildPredicateFromJson }
+
+    TaskList(ordering = "unordered", tasks = tasks)
   }
 }
