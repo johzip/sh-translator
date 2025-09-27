@@ -244,7 +244,7 @@ class ToJSONParser(domain: Domain, problem: Problem) {
 
   private def termToJSON(term: Any): String = {
     s"""{
-       |    "term": "${term.toString}",
+       |    "name": "${term.toString}",
        |    "type": "${term.getClass.getSimpleName}"
        |}""".stripMargin
   }
@@ -300,7 +300,8 @@ class ToJSONParser(domain: Domain, problem: Problem) {
       arity <- container.byarity.keys
       argumentsList <- container.byarity(arity)
     } yield {
-      val parametersJson = argumentsList.map(arg => s""""$arg"""").mkString(", ")
+      //val parametersJson = argumentsList.map(arg => s""""$arg"""").mkString(", ")
+      val parametersJson = argumentsList.map(termToJSON).mkString(", ")
       s"""{
         "name": "$atomName",
         "parameters": [$parametersJson],
