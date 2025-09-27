@@ -133,7 +133,7 @@ class ToJSONParser(domain: Domain, problem: Problem) {
             "parameters": [
                 $parametersJson
             ],
-            "precondition": $precondition,
+            "preconditions": $precondition,
             "effect": $effect
         }"""
       case None =>
