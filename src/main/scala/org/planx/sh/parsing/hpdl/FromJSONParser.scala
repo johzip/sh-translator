@@ -54,22 +54,22 @@ class FromJSONParser {
     domain.operators.foreach { op =>
       println(s"Name: ${op._name}")
       println(s"Parameter: ${op.parameters}")
-      println(s"Präcondition: ${op.precondition}")
-      println(s"Add-Effekte: ${op.add}")
-      println(s"Delete-Effekte: ${op.delete}")
+      println(s"Precondition: ${op.precondition}")
+      println(s"Add-Effect: ${op.add}")
+      println(s"Delete-Effect: ${op.delete}")
       println(s"Assignment: ${op.assignment}")
-      println(s"Kosten: ${op.cost}")
+      println(s"Cost: ${op.cost}")
       println("-----")
     }
     println("domain primitive tasks ORIGINAL: ")
     domainToCompare.operators.foreach { op =>
       println(s"Name: ${op._name}")
       println(s"Parameter: ${op.parameters}")
-      println(s"Präcondition: ${op.precondition}")
-      println(s"Add-Effekte: ${op.add}")
-      println(s"Delete-Effekte: ${op.delete}")
+      println(s"Precondition: ${op.precondition}")
+      println(s"Add-Effect: ${op.add}")
+      println(s"Delete-Effect: ${op.delete}")
       println(s"Assignment: ${op.assignment}")
-      println(s"Kosten: ${op.cost}")
+      println(s"Cost: ${op.cost}")
       println("-----")
     }
     true
@@ -80,11 +80,8 @@ class FromJSONParser {
       val name = obj.fields("name").convertTo[String]
       val parametersJson = obj.fields("parameters").convertTo[List[JsObject]]
       val parameters: List[Term] = buildParametersFromJSON(parametersJson)
-      //TODO: doesn't work yet
-      val precondition = obj.fields("precondition") match {
-        case jsObj: JsObject if jsObj.fields.get("type").contains(JsString("nil")) => ExpressionNil()
-        case _ => ExpressionNil()
-      }
+      //TODO: test precondition parsing
+      val precondition = buildPreconditionFromJSON(obj.fields("precondition").asJsObject())
       val effects = obj.fields.get("effect").map(_.convertTo[List[JsObject]]).getOrElse(Nil)
       //TODO: doesn't work yet
       val add: List[Add] = effects.collect {
@@ -106,6 +103,29 @@ class FromJSONParser {
         assignment = List(),
         cost = 0.0
       )
+    }
+  }
+
+  private def buildPreconditionFromJSON(preconditions: JsObject): Expression = {
+    preconditions.fields.get("type") match {
+      case Some(JsString("and")) =>
+        val left = preconditions.fields("left").asJsObject
+        val right = preconditions.fields("right").asJsObject
+        ExpressionAnd(buildPreconditionFromJSON(left), buildPreconditionFromJSON(right))
+      case Some(JsString("or")) =>
+        val left = preconditions.fields("left").asJsObject
+        val right = preconditions.fields("right").asJsObject
+        ExpressionOr(buildPreconditionFromJSON(left), buildPreconditionFromJSON(right))
+      case Some(JsString("not")) =>
+        val expr = preconditions.fields("expression").asJsObject
+        ExpressionNot(buildPreconditionFromJSON(expr))
+      case Some(JsString("predicate")) =>
+        val pred = buildPredicateFromJson(preconditions)
+        ExpressionAtomic(pred.name, Bindable(pred.arguments))
+      case Some(JsString("nil")) =>
+        ExpressionNil()
+      case _ =>
+        throw new RuntimeException(s"Unknown precondition type: ${preconditions.fields.get("type")}")
     }
   }
 
