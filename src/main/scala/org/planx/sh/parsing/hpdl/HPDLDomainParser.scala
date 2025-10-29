@@ -274,9 +274,10 @@ class HPDLDomainParser extends HPDLParser with ExpressionConversions with Loggin
 
   // derived
   lazy val derived_def = "(" ~> ":derived" ~> proper_predicate ~ axiom_tail <~ ")" ^^ {
-    case pp ~ at => new Axiom(pp.name, Bindable(pp.arguments)) {
-      at map (t => test(t))
-    }
+    case pp ~ at =>
+      val axiom = new Axiom(pp.name, Bindable(pp.arguments)) {
+        at map (t => test(t))
+      }
   }
 
   lazy val axiom_tail = rep1(pre)

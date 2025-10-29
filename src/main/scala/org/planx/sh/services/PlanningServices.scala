@@ -120,11 +120,14 @@ object PlanningServices {
     }
     Statistics.print
 
+    //JSON IR file generation
     val jsonParser = new ToJSONParser(domain, problem)
-    //val jsonParser = new ToJSONParser(domain.requirements, domain.tasks, domain.operators, domain.axioms, domainName, problem)
-    val fileName = domainName + "_IR.json"
+
+    var fileName = domainName + "_IR.json"
     jsonParser.writeToFile(fileName)
 
+    //JSON IR file test
+    //Example for HDDL JSON file Test:
     val fromJSONparser = new FromJSONParser()
     val result = fromJSONparser.parseFile(fileName, domain, problem)
     domain = result._1
@@ -132,18 +135,18 @@ object PlanningServices {
     Statistics.parsingTime = (currentTime - start_time)
 
     state = problem.state
-    //goal = domain.preprocessGoalTaskList(problem.goalTaskList)
+    goal = domain.preprocessGoalTaskList(problem.goalTaskList)
 
-    //PlanGeneration(state, domain.tasks, domain.operators).process(goal, numberOfPlans) match {
-    //  case Some(plans) =>
-    //    for ((p, i) <- plans.reverse.zipWithIndex) {
-    //      println("Plan %d:".format(i + 1))
-    //      p.print
-    //      println
-    //    }
-    //  case None => "Planning process failed to deliver result."
-    //}
-    //Statistics.print
+    PlanGeneration(state, domain.tasks, domain.operators).process(goal, numberOfPlans) match {
+      case Some(plans) =>
+        for ((p, i) <- plans.reverse.zipWithIndex) {
+          println("Plan %d:".format(i + 1))
+          p.print
+          println
+        }
+      case None => "Planning process failed to deliver result."
+    }
+    Statistics.print
 
   }
 }

@@ -43,7 +43,7 @@ class FromJSONParser {
     val domain = Domain(name = domainName, requirements = domainRequirements, types = Nil, predicates = Nil, functions = Nil, _operators = domainOperators, uncoupledTasks = domainTasks, axioms = Nil)
     //TODO: missing ProblemName (is it a Problem?) no pun intended
     val problem = Problem(name = "problem", domainName = domain.name, requirements = problemRequirements, objects = Objects(objects= Nil), state = problemInitState, goalTaskList = problemGoalTasks)
-    //testResult(domain, problem, domainToCompare, problemToCompare)
+    testResult(domain, problem, domainToCompare, problemToCompare)
     (domain, problem)
   }
 

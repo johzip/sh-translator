@@ -140,6 +140,9 @@ Die Inhalte sind aber ansonsten gleich, nur die Reihenfolge der Einträge ist ve
 - Domain operators und tasks:
   - Die Operatoren und Tasks sind strukturell gleich, aber die Variablen sind unterschiedlich benannt und die Reihenfolge der Listen kann abweichen.
 
+see planWithGivenDomainAndProblemNamePrintPlans Method in PlanningServices.scala for how the JSON components are used.
+
+
 ## Relevant Literature:
 
 1. Georgievski, I. Coordinating services embedded everywhere via hierarchical planning. Ph.D. Thesis, University of Groningen, October 2015.
