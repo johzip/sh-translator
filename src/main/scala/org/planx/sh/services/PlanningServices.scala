@@ -1,8 +1,8 @@
 package org.planx.sh.services
 
 
-import org.planx.sh.parsing.hpdl.{HPDLDomainParser, HPDLProblemParser}
-import org.planx.sh.parsing.hpdl.JSONParser
+import org.planx.sh.client.Client.args
+import org.planx.sh.parsing.hpdl.{FromJSONParser, HPDLDomainParser, HPDLProblemParser, ToJSONParser}
 import org.planx.sh.problem.Domain
 import org.planx.sh.solution.Plan
 import org.planx.sh.utility.{Resources, Statistics}
@@ -102,12 +102,12 @@ object PlanningServices {
     val domainPath = Resources.getDomainPath(domainName)
 
     val start_time = currentTime
-    val domain = HPDLDomainParser.processDomainFileToObject(domainPath)
-    val problem = HPDLProblemParser.processProblemFileToObject(Resources.getProblemPath(domainName, problemName))
+    var domain = HPDLDomainParser.processDomainFileToObject(domainPath)
+    var problem = HPDLProblemParser.processProblemFileToObject(Resources.getProblemPath(domainName, problemName))
     Statistics.parsingTime = (currentTime - start_time)
 
-    val state = problem.state
-    val goal = domain.preprocessGoalTaskList(problem.goalTaskList)
+    var state = problem.state
+    var goal = domain.preprocessGoalTaskList(problem.goalTaskList)
 
     PlanGeneration(state, domain.tasks, domain.operators).process(goal, numberOfPlans) match {
       case Some(plans) =>
@@ -120,9 +120,33 @@ object PlanningServices {
     }
     Statistics.print
 
+    //JSON IR file generation
+    val jsonParser = new ToJSONParser(domain, problem)
 
-    val jsonParser = new JSONParser(domain.requirements, domain.tasks, domain.operators, domain.axioms, domainName, problem)
-    val fileName = domainName + "_IR.json"
+    var fileName = domainName + "_IR.json"
     jsonParser.writeToFile(fileName)
+
+    //JSON IR file test
+    //Example for HDDL JSON file Test:
+    val fromJSONparser = new FromJSONParser()
+    val result = fromJSONparser.parseFile(fileName, domain, problem)
+    domain = result._1
+    problem = result._2
+    Statistics.parsingTime = (currentTime - start_time)
+
+    state = problem.state
+    goal = domain.preprocessGoalTaskList(problem.goalTaskList)
+
+    PlanGeneration(state, domain.tasks, domain.operators).process(goal, numberOfPlans) match {
+      case Some(plans) =>
+        for ((p, i) <- plans.reverse.zipWithIndex) {
+          println("Plan %d:".format(i + 1))
+          p.print
+          println
+        }
+      case None => "Planning process failed to deliver result."
+    }
+    Statistics.print
+
   }
 }

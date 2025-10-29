@@ -108,6 +108,39 @@ Note:
 
 Georgievski, I., Palghadmal, A. V., Alnazer, E., and Aiello, M. SH: Service-oriented HTN Planning system for real-world domains. *SoftwareX*, 27: 101779. 2024.
 
+## JSON Parser
+The SH Planning System includes a JSON parser to put hpdl Programs consisting of domain and problem definitions into a JSON format. 
+There also exists a JSON parser that can parse the JSON format back into SH Planner Objects to run the Planner.
+
+Currently this JSON format has the following differences to the original SH-System Objects from the hpdl files:
+The testResult Method points out the following differences between NEW (JSON) and ORIGINAL (hpdl).
+The following is a german List of the differences:
+- Ordering und Variablen-Präfix
+  - Die Reihenfolge (ordering) bei TaskList ist unterschiedlich:
+    - NEW: unordered (Dummy value)
+    - ORIGINAL: sequence
+- Die Variablen 
+  - in NEW sind ohne Präfix (x, y), 
+  - in ORIGINAL mit Präfix (?x, ?y).
+- Domain types:
+  - NEW: leer
+  - ORIGINAL: enthält DomainType(block,notype)
+- Domain predicates:
+  - NEW: leer
+  - ORIGINAL: enthält alle Prädikate (on, ontable, clear, handempty, holding)
+- Problem name:
+  - NEW: "problem"
+  - ORIGINAL: "exemplary-problem"
+- Problem objects:
+  - NEW: leer
+  - ORIGINAL: enthält alle Block-Objekte
+- Problem state:
+  - Die Reihenfolge der Blöcke in den Listen ist unterschiedlich (z.B. block und on).
+Die Inhalte sind aber ansonsten gleich, nur die Reihenfolge der Einträge ist vertauscht.
+- Domain operators und tasks:
+  - Die Operatoren und Tasks sind strukturell gleich, aber die Variablen sind unterschiedlich benannt und die Reihenfolge der Listen kann abweichen.
+
+see planWithGivenDomainAndProblemNamePrintPlans Method in PlanningServices.scala for how the JSON components are used.
 
 
 ## Relevant Literature:

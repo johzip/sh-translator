@@ -34,6 +34,14 @@ abstract class Axiom(name: String, generalArguments: Bindable) extends Expressio
     }
   }
 
+  def toJASON: String = {
+    val args = specificArguments match {
+      case null => ""
+      case _ => specificArguments.toString
+    }
+    s"""{"name": "$n", "args": $args}"""
+  }
+
   def apply(t1: Term): Axiom = apply(Bindable(List(t1)))
   def apply(t1: Term, t2: Term): Axiom = apply(Bindable(List(t1, t2)))
   def apply(t1: Term, t2: Term, t3: Term): Axiom = apply(Bindable(List(t1, t2, t3)))
