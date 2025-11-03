@@ -1,0 +1,267 @@
+{
+    "basic": {
+        "requirements": ["S",
+        "T"],
+        "problem": {
+            "goal": {
+                "tasks": [
+                    {
+    "name": "swap",
+    "type": "predicate",
+    "parameters": [
+        {
+    "term": "banjo",
+    "type": "Constant"
+},
+                {
+    "term": "kiwi",
+    "type": "Constant"
+}
+    ]
+}
+                ]
+            },
+            "init": [
+                {
+        "name": "have",
+        "parameters": ["kiwi"],
+        "type": "predicate"
+      },
+                {
+        "name": "thing",
+        "parameters": ["banjo"],
+        "type": "predicate"
+      },
+                {
+        "name": "thing",
+        "parameters": ["kiwi"],
+        "type": "predicate"
+      }
+            ]
+        },
+        "domain": {
+            "name": "basic",
+            "primitive_tasks": [
+                {
+            "name": "drop",
+            "parameters": [
+                {
+          "name": "drop",
+          "type": "thing"
+      }
+            ],
+            "precondition": {
+          "type": "and",
+          "left": {
+          "type": "predicate",
+          "name": "have",
+          "parameters": [{
+          "name": "drop",
+          "type": "thing"
+      }]
+        },
+          "right": {
+          "type": "predicate",
+          "name": "thing",
+          "parameters": [{
+          "name": "drop",
+          "type": "thing"
+      }]
+        }
+        },
+            "effect": [{
+          "type": "not",
+          "expression": [{
+            "type": "predicate",
+            "name": "have",
+            "parameters": [{
+          "name": "drop",
+          "type": "thing"
+      }]
+          }]
+        }]
+        },
+                {
+            "name": "pickup",
+            "parameters": [
+                {
+          "name": "pickup",
+          "type": "thing"
+      }
+            ],
+            "precondition": {
+          "type": "predicate",
+          "name": "thing",
+          "parameters": [{
+          "name": "pickup",
+          "type": "thing"
+      }]
+        },
+            "effect": [{
+          "type": "predicate",
+          "name": "have",
+          "parameters": [{
+          "name": "pickup",
+          "type": "thing"
+      }]
+        }]
+        }
+            ],
+            "compund_tasks": [
+                {
+        "name": "swap",
+        "parameters": [
+            {
+          "name": "x",
+          "type": "thing"
+      },
+                        {
+          "name": "y",
+          "type": "thing"
+      }
+        ],
+        "methods": [
+            {
+      "name": "have-x",
+      "preconditions": {
+          "type": "and",
+          "left": {
+          "type": "and",
+          "left": {
+          "type": "predicate",
+          "name": "have",
+          "parameters": [{
+          "name": "x",
+          "type": "thing"
+      }]
+        },
+          "right": {
+          "type": "not",
+          "expression": {
+          "type": "predicate",
+          "name": "have",
+          "parameters": [{
+          "name": "y",
+          "type": "thing"
+      }]
+        }
+        }
+        },
+          "right": {
+          "type": "and",
+          "left": {
+          "type": "predicate",
+          "name": "thing",
+          "parameters": [{
+          "name": "x",
+          "type": "thing"
+      }]
+        },
+          "right": {
+          "type": "predicate",
+          "name": "thing",
+          "parameters": [{
+          "name": "y",
+          "type": "thing"
+      }]
+        }
+        }
+        },
+      "tasks": [
+          {
+    "name": "drop",
+    "type": "predicate",
+    "parameters": [
+        {
+    "term": "?x",
+    "type": "Var"
+}
+    ]
+},
+        {
+    "name": "pickup",
+    "type": "predicate",
+    "parameters": [
+        {
+    "term": "?y",
+    "type": "Var"
+}
+    ]
+}
+      ]
+    },
+                        {
+      "name": "have-y",
+      "preconditions": {
+          "type": "and",
+          "left": {
+          "type": "and",
+          "left": {
+          "type": "predicate",
+          "name": "have",
+          "parameters": [{
+          "name": "y",
+          "type": "thing"
+      }]
+        },
+          "right": {
+          "type": "not",
+          "expression": {
+          "type": "predicate",
+          "name": "have",
+          "parameters": [{
+          "name": "x",
+          "type": "thing"
+      }]
+        }
+        }
+        },
+          "right": {
+          "type": "and",
+          "left": {
+          "type": "predicate",
+          "name": "thing",
+          "parameters": [{
+          "name": "x",
+          "type": "thing"
+      }]
+        },
+          "right": {
+          "type": "predicate",
+          "name": "thing",
+          "parameters": [{
+          "name": "y",
+          "type": "thing"
+      }]
+        }
+        }
+        },
+      "tasks": [
+          {
+    "name": "drop",
+    "type": "predicate",
+    "parameters": [
+        {
+    "term": "?y",
+    "type": "Var"
+}
+    ]
+},
+        {
+    "name": "pickup",
+    "type": "predicate",
+    "parameters": [
+        {
+    "term": "?x",
+    "type": "Var"
+}
+    ]
+}
+      ]
+    }
+        ]
+    }
+            ]
+        }
+    }
+  }

@@ -1,0 +1,2119 @@
+{
+    "cafeteria": {
+        "requirements": ["S",
+        "T",
+        "NP",
+        "NF",
+        "CE"],
+        "problem": {
+            "goal": {
+                "tasks": [
+                    {
+    "name": "adjust",
+    "type": "predicate",
+    "parameters": [
+        {
+    "term": "s1",
+    "type": "Constant"
+}
+    ]
+}
+                ]
+            },
+            "init": [
+                {
+        "name": "light-level",
+        "parameters": ["a2", "290.0"],
+        "type": "predicate"
+      },
+                {
+        "name": "light-level",
+        "parameters": ["a6", "300.0"],
+        "type": "predicate"
+      },
+                {
+        "name": "light-level",
+        "parameters": ["a1", "240.0"],
+        "type": "predicate"
+      },
+                {
+        "name": "light-level",
+        "parameters": ["a3", "300.0"],
+        "type": "predicate"
+      },
+                {
+        "name": "light-level",
+        "parameters": ["a4", "260.0"],
+        "type": "predicate"
+      },
+                {
+        "name": "light-level",
+        "parameters": ["a5", "290.0"],
+        "type": "predicate"
+      },
+                {
+        "name": "room",
+        "parameters": ["s1"],
+        "type": "predicate"
+      },
+                {
+        "name": "securitylamp",
+        "parameters": ["s1c8"],
+        "type": "predicate"
+      },
+                {
+        "name": "securitylamp",
+        "parameters": ["s1g8"],
+        "type": "predicate"
+      },
+                {
+        "name": "securitylamp",
+        "parameters": ["s1f2"],
+        "type": "predicate"
+      },
+                {
+        "name": "securitylamp",
+        "parameters": ["s1b2"],
+        "type": "predicate"
+      },
+                {
+        "name": "securitylamp",
+        "parameters": ["s1e8"],
+        "type": "predicate"
+      },
+                {
+        "name": "in",
+        "parameters": ["s1a8", "a3"],
+        "type": "predicate"
+      },
+                {
+        "name": "in",
+        "parameters": ["a4", "s1"],
+        "type": "predicate"
+      },
+                {
+        "name": "in",
+        "parameters": ["a1", "s1"],
+        "type": "predicate"
+      },
+                {
+        "name": "in",
+        "parameters": ["s1b2", "a1"],
+        "type": "predicate"
+      },
+                {
+        "name": "in",
+        "parameters": ["s1f10", "a5"],
+        "type": "predicate"
+      },
+                {
+        "name": "in",
+        "parameters": ["a3", "s1"],
+        "type": "predicate"
+      },
+                {
+        "name": "in",
+        "parameters": ["s1f6", "a5"],
+        "type": "predicate"
+      },
+                {
+        "name": "in",
+        "parameters": ["a5", "s1"],
+        "type": "predicate"
+      },
+                {
+        "name": "in",
+        "parameters": ["s1c4", "a1"],
+        "type": "predicate"
+      },
+                {
+        "name": "in",
+        "parameters": ["s1c8", "a4"],
+        "type": "predicate"
+      },
+                {
+        "name": "in",
+        "parameters": ["s1g8", "a6"],
+        "type": "predicate"
+      },
+                {
+        "name": "in",
+        "parameters": ["s1d10", "a4"],
+        "type": "predicate"
+      },
+                {
+        "name": "in",
+        "parameters": ["s1e4", "a1"],
+        "type": "predicate"
+      },
+                {
+        "name": "in",
+        "parameters": ["a2", "s1"],
+        "type": "predicate"
+      },
+                {
+        "name": "in",
+        "parameters": ["s1b10", "a3"],
+        "type": "predicate"
+      },
+                {
+        "name": "in",
+        "parameters": ["s1e8", "a5"],
+        "type": "predicate"
+      },
+                {
+        "name": "in",
+        "parameters": ["s1d2", "a1"],
+        "type": "predicate"
+      },
+                {
+        "name": "in",
+        "parameters": ["s1g4", "a2"],
+        "type": "predicate"
+      },
+                {
+        "name": "in",
+        "parameters": ["s1a4", "a1"],
+        "type": "predicate"
+      },
+                {
+        "name": "in",
+        "parameters": ["s1h2", "a2"],
+        "type": "predicate"
+      },
+                {
+        "name": "in",
+        "parameters": ["s1h6", "a2"],
+        "type": "predicate"
+      },
+                {
+        "name": "in",
+        "parameters": ["a6", "s1"],
+        "type": "predicate"
+      },
+                {
+        "name": "in",
+        "parameters": ["s1b6", "a3"],
+        "type": "predicate"
+      },
+                {
+        "name": "in",
+        "parameters": ["s1d6", "a4"],
+        "type": "predicate"
+      },
+                {
+        "name": "in",
+        "parameters": ["s1h10", "a6"],
+        "type": "predicate"
+      },
+                {
+        "name": "in",
+        "parameters": ["s1f2", "a1"],
+        "type": "predicate"
+      },
+                {
+        "name": "regularlamp",
+        "parameters": ["s1f6"],
+        "type": "predicate"
+      },
+                {
+        "name": "regularlamp",
+        "parameters": ["s1d6"],
+        "type": "predicate"
+      },
+                {
+        "name": "regularlamp",
+        "parameters": ["s1h6"],
+        "type": "predicate"
+      },
+                {
+        "name": "regularlamp",
+        "parameters": ["s1c4"],
+        "type": "predicate"
+      },
+                {
+        "name": "regularlamp",
+        "parameters": ["s1h10"],
+        "type": "predicate"
+      },
+                {
+        "name": "regularlamp",
+        "parameters": ["s1h2"],
+        "type": "predicate"
+      },
+                {
+        "name": "regularlamp",
+        "parameters": ["s1f10"],
+        "type": "predicate"
+      },
+                {
+        "name": "regularlamp",
+        "parameters": ["s1a4"],
+        "type": "predicate"
+      },
+                {
+        "name": "regularlamp",
+        "parameters": ["s1e4"],
+        "type": "predicate"
+      },
+                {
+        "name": "regularlamp",
+        "parameters": ["s1d2"],
+        "type": "predicate"
+      },
+                {
+        "name": "regularlamp",
+        "parameters": ["s1b10"],
+        "type": "predicate"
+      },
+                {
+        "name": "regularlamp",
+        "parameters": ["s1a8"],
+        "type": "predicate"
+      },
+                {
+        "name": "regularlamp",
+        "parameters": ["s1b6"],
+        "type": "predicate"
+      },
+                {
+        "name": "regularlamp",
+        "parameters": ["s1d10"],
+        "type": "predicate"
+      },
+                {
+        "name": "regularlamp",
+        "parameters": ["s1g4"],
+        "type": "predicate"
+      },
+                {
+        "name": "area",
+        "parameters": ["a1"],
+        "type": "predicate"
+      },
+                {
+        "name": "area",
+        "parameters": ["a6"],
+        "type": "predicate"
+      },
+                {
+        "name": "area",
+        "parameters": ["a3"],
+        "type": "predicate"
+      },
+                {
+        "name": "area",
+        "parameters": ["a2"],
+        "type": "predicate"
+      },
+                {
+        "name": "area",
+        "parameters": ["a5"],
+        "type": "predicate"
+      },
+                {
+        "name": "area",
+        "parameters": ["a4"],
+        "type": "predicate"
+      },
+                {
+        "name": "turned",
+        "parameters": ["s1b2"],
+        "type": "predicate"
+      },
+                {
+        "name": "turned",
+        "parameters": ["s1e8"],
+        "type": "predicate"
+      },
+                {
+        "name": "turned",
+        "parameters": ["s1c8"],
+        "type": "predicate"
+      },
+                {
+        "name": "turned",
+        "parameters": ["s1f2"],
+        "type": "predicate"
+      },
+                {
+        "name": "turned",
+        "parameters": ["s1g4"],
+        "type": "predicate"
+      },
+                {
+        "name": "turned",
+        "parameters": ["s1g8"],
+        "type": "predicate"
+      },
+                {
+        "name": "presence",
+        "parameters": ["a2"],
+        "type": "predicate"
+      },
+                {
+        "name": "presence",
+        "parameters": ["a5"],
+        "type": "predicate"
+      },
+                {
+        "name": "near-by",
+        "parameters": ["s1c4", "a3"],
+        "type": "predicate"
+      },
+                {
+        "name": "near-by",
+        "parameters": ["s1f6", "a2"],
+        "type": "predicate"
+      },
+                {
+        "name": "near-by",
+        "parameters": ["s1g4", "a1"],
+        "type": "predicate"
+      },
+                {
+        "name": "near-by",
+        "parameters": ["s1f6", "a6"],
+        "type": "predicate"
+      },
+                {
+        "name": "near-by",
+        "parameters": ["s1f10", "a6"],
+        "type": "predicate"
+      },
+                {
+        "name": "near-by",
+        "parameters": ["s1e4", "a4"],
+        "type": "predicate"
+      },
+                {
+        "name": "near-by",
+        "parameters": ["s1g8", "a5"],
+        "type": "predicate"
+      },
+                {
+        "name": "near-by",
+        "parameters": ["s1e8", "a4"],
+        "type": "predicate"
+      },
+                {
+        "name": "near-by",
+        "parameters": ["s1d10", "a5"],
+        "type": "predicate"
+      },
+                {
+        "name": "near-by",
+        "parameters": ["s1b6", "a4"],
+        "type": "predicate"
+      },
+                {
+        "name": "near-by",
+        "parameters": ["s1a4", "a3"],
+        "type": "predicate"
+      },
+                {
+        "name": "near-by",
+        "parameters": ["s1c4", "a4"],
+        "type": "predicate"
+      },
+                {
+        "name": "near-by",
+        "parameters": ["s1f2", "a2"],
+        "type": "predicate"
+      },
+                {
+        "name": "near-by",
+        "parameters": ["s1b10", "a4"],
+        "type": "predicate"
+      },
+                {
+        "name": "near-by",
+        "parameters": ["s1d6", "a5"],
+        "type": "predicate"
+      },
+                {
+        "name": "near-by",
+        "parameters": ["s1e4", "a5"],
+        "type": "predicate"
+      },
+                {
+        "name": "near-by",
+        "parameters": ["s1h6", "a6"],
+        "type": "predicate"
+      },
+                {
+        "name": "near-by",
+        "parameters": ["s1g4", "a5"],
+        "type": "predicate"
+      },
+                {
+        "name": "near-by",
+        "parameters": ["s1c8", "a3"],
+        "type": "predicate"
+      }
+            ]
+        },
+        "domain": {
+            "name": "cafeteria",
+            "primitive_tasks": [
+                {
+            "name": "bk-check-area",
+            "parameters": [
+                {
+          "name": "a",
+          "type": "area"
+      }
+            ],
+            "precondition": {
+          "type": "predicate",
+          "name": "area",
+          "parameters": [{
+          "name": "a",
+          "type": "area"
+      }]
+        },
+            "effect": [{
+          "type": "predicate",
+          "name": "checked",
+          "parameters": [{
+          "name": "a",
+          "type": "area"
+      }]
+        }]
+        },
+                {
+            "name": "bk-decrease-direct",
+            "parameters": [
+                {
+          "name": "a",
+          "type": "area"
+      }
+            ],
+            "precondition": {
+          "type": "predicate",
+          "name": "area",
+          "parameters": [{
+          "name": "a",
+          "type": "area"
+      }]
+        },
+            "effect": []
+        },
+                {
+            "name": "bk-check",
+            "parameters": [
+                {
+          "name": "l",
+          "type": "regularlamp"
+      },
+                        {
+          "name": "a",
+          "type": "area"
+      }
+            ],
+            "precondition": {
+          "type": "and",
+          "left": {
+          "type": "predicate",
+          "name": "regularlamp",
+          "parameters": [{
+          "name": "l",
+          "type": "regularlamp"
+      }]
+        },
+          "right": {
+          "type": "predicate",
+          "name": "area",
+          "parameters": [{
+          "name": "a",
+          "type": "area"
+      }]
+        }
+        },
+            "effect": [{
+          "type": "predicate",
+          "name": "checked",
+          "parameters": [{
+          "name": "l",
+          "type": "regularlamp"
+      },{
+          "name": "a",
+          "type": "area"
+      }]
+        }]
+        },
+                {
+            "name": "bk-increase-direct",
+            "parameters": [
+                {
+          "name": "a",
+          "type": "area"
+      }
+            ],
+            "precondition": {
+          "type": "predicate",
+          "name": "area",
+          "parameters": [{
+          "name": "a",
+          "type": "area"
+      }]
+        },
+            "effect": []
+        },
+                {
+            "name": "bk-uncheck-lamps",
+            "parameters": [
+                {
+          "name": "a",
+          "type": "area"
+      }
+            ],
+            "precondition": {
+          "type": "predicate",
+          "name": "area",
+          "parameters": [{
+          "name": "a",
+          "type": "area"
+      }]
+        },
+            "effect": [{
+          "type": "forall",
+          "expression": {
+          "type": "and",
+          "left": {
+          "type": "predicate",
+          "name": "regularlamp",
+          "parameters": [{
+          "name": "l",
+          "type": "regularlamp"
+      }]
+        },
+          "right": {
+          "type": "predicate",
+          "name": "checked",
+          "parameters": [{
+          "name": "l",
+          "type": "regularlamp"
+      },{
+          "name": "a",
+          "type": "area"
+      }]
+        }
+        },
+          "predicates": [{
+          "type": "not",
+          "expression": [{
+            "type": "predicate",
+            "name": "checked",
+            "parameters": [{
+          "name": "l",
+          "type": "regularlamp"
+      },{
+          "name": "a",
+          "type": "area"
+      }]
+          }]
+        }],
+          "add_list": false
+        }]
+        },
+                {
+            "name": "bk-decrease-near-by",
+            "parameters": [
+                {
+          "name": "a",
+          "type": "area"
+      }
+            ],
+            "precondition": {
+          "type": "predicate",
+          "name": "area",
+          "parameters": [{
+          "name": "a",
+          "type": "area"
+      }]
+        },
+            "effect": []
+        },
+                {
+            "name": "turn-off-lamp",
+            "parameters": [
+                {
+          "name": "l",
+          "type": "regularlamp"
+      }
+            ],
+            "precondition": {
+          "type": "and",
+          "left": {
+          "type": "predicate",
+          "name": "turned",
+          "parameters": [{
+          "name": "l",
+          "type": "regularlamp"
+      }]
+        },
+          "right": {
+          "type": "predicate",
+          "name": "regularlamp",
+          "parameters": [{
+          "name": "l",
+          "type": "regularlamp"
+      }]
+        }
+        },
+            "effect": [{
+          "type": "not",
+          "expression": [{
+            "type": "predicate",
+            "name": "turned",
+            "parameters": [{
+          "name": "l",
+          "type": "regularlamp"
+      }]
+          }]
+        }]
+        },
+                {
+            "name": "bk-increase-near-by",
+            "parameters": [
+                {
+          "name": "a",
+          "type": "area"
+      }
+            ],
+            "precondition": {
+          "type": "predicate",
+          "name": "area",
+          "parameters": [{
+          "name": "a",
+          "type": "area"
+      }]
+        },
+            "effect": []
+        },
+                {
+            "name": "turn-on-lamp",
+            "parameters": [
+                {
+          "name": "l",
+          "type": "regularlamp"
+      }
+            ],
+            "precondition": {
+          "type": "and",
+          "left": {
+          "type": "not",
+          "expression": {
+          "type": "predicate",
+          "name": "turned",
+          "parameters": [{
+          "name": "l",
+          "type": "regularlamp"
+      }]
+        }
+        },
+          "right": {
+          "type": "predicate",
+          "name": "regularlamp",
+          "parameters": [{
+          "name": "l",
+          "type": "regularlamp"
+      }]
+        }
+        },
+            "effect": [{
+          "type": "predicate",
+          "name": "turned",
+          "parameters": [{
+          "name": "l",
+          "type": "regularlamp"
+      }]
+        }]
+        }
+            ],
+            "compund_tasks": [
+                {
+        "name": "turn-on-lamps",
+        "parameters": [
+            {
+          "name": "a",
+          "type": "area"
+      }
+        ],
+        "methods": [
+            {
+      "name": "lamp-to-turn-on",
+      "preconditions": {
+          "type": "and",
+          "left": {
+          "type": "and",
+          "left": {
+          "type": "predicate",
+          "name": "in",
+          "parameters": [{
+          "name": "l",
+          "type": "regularlamp"
+      },{
+          "name": "a",
+          "type": "area"
+      }]
+        },
+          "right": {
+          "type": "and",
+          "left": {
+          "type": "not",
+          "expression": {
+          "type": "predicate",
+          "name": "turned",
+          "parameters": [{
+          "name": "l",
+          "type": "regularlamp"
+      }]
+        }
+        },
+          "right": {
+          "type": "predicate",
+          "name": "regularlamp",
+          "parameters": [{
+          "name": "l",
+          "type": "regularlamp"
+      }]
+        }
+        }
+        },
+          "right": {
+          "type": "predicate",
+          "name": "area",
+          "parameters": [{
+          "name": "a",
+          "type": "area"
+      }]
+        }
+        },
+      "tasks": [
+          {
+    "name": "turn-on-lamp",
+    "type": "predicate",
+    "parameters": [
+        {
+    "term": "?l",
+    "type": "Var"
+}
+    ]
+},
+        {
+    "name": "bk-increase-direct",
+    "type": "predicate",
+    "parameters": [
+        {
+    "term": "?a",
+    "type": "Var"
+}
+    ]
+},
+        {
+    "name": "turn-on-lamps",
+    "type": "predicate",
+    "parameters": [
+        {
+    "term": "?a",
+    "type": "Var"
+}
+    ]
+}
+      ]
+    },
+                        {
+      "name": "no-more-lamps",
+      "preconditions": {
+          "type": "predicate",
+          "name": "area",
+          "parameters": [{
+          "name": "a",
+          "type": "area"
+      }]
+        },
+      "tasks": [
+          
+      ]
+    }
+        ]
+    },
+                {
+        "name": "adjust-for-absence",
+        "parameters": [
+            {
+          "name": "a",
+          "type": "area"
+      }
+        ],
+        "methods": [
+            {
+      "name": "turn-off-all-lamps",
+      "preconditions": {
+          "type": "predicate",
+          "name": "area",
+          "parameters": [{
+          "name": "a",
+          "type": "area"
+      }]
+        },
+      "tasks": [
+          {
+    "name": "turn-off-lamps",
+    "type": "predicate",
+    "parameters": [
+        {
+    "term": "?a",
+    "type": "Var"
+}
+    ]
+}
+      ]
+    }
+        ]
+    },
+                {
+        "name": "adjust-light-level-by-decreasing",
+        "parameters": [
+            {
+          "name": "l",
+          "type": "regularlamp"
+      }
+        ],
+        "methods": [
+            {
+      "name": "lamp-belongs-directly-to-an-area",
+      "preconditions": {
+          "type": "and",
+          "left": {
+          "type": "and",
+          "left": {
+          "type": "predicate",
+          "name": "in",
+          "parameters": [{
+          "name": "l",
+          "type": "regularlamp"
+      },{
+          "name": "a",
+          "type": "area"
+      }]
+        },
+          "right": {
+          "type": "not",
+          "expression": {
+          "type": "predicate",
+          "name": "checked",
+          "parameters": [{
+          "name": "l",
+          "type": "regularlamp"
+      },{
+          "name": "a",
+          "type": "area"
+      }]
+        }
+        }
+        },
+          "right": {
+          "type": "predicate",
+          "name": "regularlamp",
+          "parameters": [{
+          "name": "l",
+          "type": "regularlamp"
+      }]
+        }
+        },
+      "tasks": [
+          {
+    "name": "bk-decrease-direct",
+    "type": "predicate",
+    "parameters": [
+        {
+    "term": "?a",
+    "type": "Var"
+}
+    ]
+},
+        {
+    "name": "bk-check",
+    "type": "predicate",
+    "parameters": [
+        {
+    "term": "?l",
+    "type": "Var"
+},
+                {
+    "term": "?a",
+    "type": "Var"
+}
+    ]
+},
+        {
+    "name": "adjust-light-level-by-decreasing",
+    "type": "predicate",
+    "parameters": [
+        {
+    "term": "?l",
+    "type": "Var"
+}
+    ]
+}
+      ]
+    },
+                        {
+      "name": "lamp-is-near-by-other-areas",
+      "preconditions": {
+          "type": "and",
+          "left": {
+          "type": "and",
+          "left": {
+          "type": "predicate",
+          "name": "near-by",
+          "parameters": [{
+          "name": "l",
+          "type": "regularlamp"
+      },{
+          "name": "a",
+          "type": "area"
+      }]
+        },
+          "right": {
+          "type": "not",
+          "expression": {
+          "type": "predicate",
+          "name": "checked",
+          "parameters": [{
+          "name": "l",
+          "type": "regularlamp"
+      },{
+          "name": "a",
+          "type": "area"
+      }]
+        }
+        }
+        },
+          "right": {
+          "type": "predicate",
+          "name": "regularlamp",
+          "parameters": [{
+          "name": "l",
+          "type": "regularlamp"
+      }]
+        }
+        },
+      "tasks": [
+          {
+    "name": "bk-decrease-near-by",
+    "type": "predicate",
+    "parameters": [
+        {
+    "term": "?a",
+    "type": "Var"
+}
+    ]
+},
+        {
+    "name": "bk-check",
+    "type": "predicate",
+    "parameters": [
+        {
+    "term": "?l",
+    "type": "Var"
+},
+                {
+    "term": "?a",
+    "type": "Var"
+}
+    ]
+},
+        {
+    "name": "adjust-light-level-by-decreasing",
+    "type": "predicate",
+    "parameters": [
+        {
+    "term": "?l",
+    "type": "Var"
+}
+    ]
+}
+      ]
+    },
+                        {
+      "name": "all-done",
+      "preconditions": {
+          "type": "predicate",
+          "name": "regularlamp",
+          "parameters": [{
+          "name": "l",
+          "type": "regularlamp"
+      }]
+        },
+      "tasks": [
+          
+      ]
+    }
+        ]
+    },
+                {
+        "name": "turn-off-lamps",
+        "parameters": [
+            {
+          "name": "a",
+          "type": "area"
+      }
+        ],
+        "methods": [
+            {
+      "name": "lamp-to-turn-off",
+      "preconditions": {
+          "type": "and",
+          "left": {
+          "type": "and",
+          "left": {
+          "type": "predicate",
+          "name": "in",
+          "parameters": [{
+          "name": "l",
+          "type": "regularlamp"
+      },{
+          "name": "a",
+          "type": "area"
+      }]
+        },
+          "right": {
+          "type": "and",
+          "left": {
+          "type": "predicate",
+          "name": "turned",
+          "parameters": [{
+          "name": "l",
+          "type": "regularlamp"
+      }]
+        },
+          "right": {
+          "type": "and",
+          "left": {
+          "type": "not",
+          "expression": {
+          "type": "predicate",
+          "name": "securitylamp",
+          "parameters": [{
+          "name": "l",
+          "type": "regularlamp"
+      }]
+        }
+        },
+          "right": {
+          "type": "and",
+          "left": {
+          "type": "predicate",
+          "name": "near-by",
+          "parameters": [{
+          "name": "l",
+          "type": "regularlamp"
+      },{
+          "name": "a1",
+          "type": "notype"
+      }]
+        },
+          "right": {
+          "type": "and",
+          "left": {
+          "type": "predicate",
+          "name": "checked",
+          "parameters": [{
+          "name": "a1",
+          "type": "notype"
+      }]
+        },
+          "right": {
+          "type": "and",
+          "left": {
+          "type": "not",
+          "expression": {
+          "type": "predicate",
+          "name": "checked",
+          "parameters": [{
+          "name": "l",
+          "type": "regularlamp"
+      },{
+          "name": "a",
+          "type": "area"
+      }]
+        }
+        },
+          "right": {
+          "type": "predicate",
+          "name": "presence",
+          "parameters": [{
+          "name": "a1",
+          "type": "notype"
+      }]
+        }
+        }
+        }
+        }
+        }
+        }
+        },
+          "right": {
+          "type": "predicate",
+          "name": "area",
+          "parameters": [{
+          "name": "a",
+          "type": "area"
+      }]
+        }
+        },
+      "tasks": [
+          {
+    "name": "bk-check",
+    "type": "predicate",
+    "parameters": [
+        {
+    "term": "?l",
+    "type": "Var"
+},
+                {
+    "term": "?a",
+    "type": "Var"
+}
+    ]
+},
+        {
+    "name": "turn-off-lamps",
+    "type": "predicate",
+    "parameters": [
+        {
+    "term": "?a",
+    "type": "Var"
+}
+    ]
+}
+      ]
+    },
+                        {
+      "name": "lamp-to-turn-off",
+      "preconditions": {
+          "type": "and",
+          "left": {
+          "type": "and",
+          "left": {
+          "type": "predicate",
+          "name": "in",
+          "parameters": [{
+          "name": "l",
+          "type": "regularlamp"
+      },{
+          "name": "a",
+          "type": "area"
+      }]
+        },
+          "right": {
+          "type": "and",
+          "left": {
+          "type": "predicate",
+          "name": "turned",
+          "parameters": [{
+          "name": "l",
+          "type": "regularlamp"
+      }]
+        },
+          "right": {
+          "type": "and",
+          "left": {
+          "type": "not",
+          "expression": {
+          "type": "predicate",
+          "name": "securitylamp",
+          "parameters": [{
+          "name": "l",
+          "type": "regularlamp"
+      }]
+        }
+        },
+          "right": {
+          "type": "not",
+          "expression": {
+          "type": "predicate",
+          "name": "checked",
+          "parameters": [{
+          "name": "l",
+          "type": "regularlamp"
+      },{
+          "name": "a",
+          "type": "area"
+      }]
+        }
+        }
+        }
+        }
+        },
+          "right": {
+          "type": "predicate",
+          "name": "area",
+          "parameters": [{
+          "name": "a",
+          "type": "area"
+      }]
+        }
+        },
+      "tasks": [
+          {
+    "name": "turn-off-lamp",
+    "type": "predicate",
+    "parameters": [
+        {
+    "term": "?l",
+    "type": "Var"
+}
+    ]
+},
+        {
+    "name": "bk-check",
+    "type": "predicate",
+    "parameters": [
+        {
+    "term": "?l",
+    "type": "Var"
+},
+                {
+    "term": "?a",
+    "type": "Var"
+}
+    ]
+},
+        {
+    "name": "bk-decrease-direct",
+    "type": "predicate",
+    "parameters": [
+        {
+    "term": "?a",
+    "type": "Var"
+}
+    ]
+},
+        {
+    "name": "turn-off-lamps",
+    "type": "predicate",
+    "parameters": [
+        {
+    "term": "?a",
+    "type": "Var"
+}
+    ]
+}
+      ]
+    },
+                        {
+      "name": "no-more-lamps",
+      "preconditions": {
+          "type": "predicate",
+          "name": "area",
+          "parameters": [{
+          "name": "a",
+          "type": "area"
+      }]
+        },
+      "tasks": [
+          {
+    "name": "bk-uncheck-lamps",
+    "type": "predicate",
+    "parameters": [
+        {
+    "term": "?a",
+    "type": "Var"
+}
+    ]
+}
+      ]
+    }
+        ]
+    },
+                {
+        "name": "adjust",
+        "parameters": [
+            {
+          "name": "r",
+          "type": "room"
+      }
+        ],
+        "methods": [
+            {
+      "name": "adjust-area-for-presence",
+      "preconditions": {
+          "type": "and",
+          "left": {
+          "type": "and",
+          "left": {
+          "type": "predicate",
+          "name": "in",
+          "parameters": [{
+          "name": "a",
+          "type": "area"
+      },{
+          "name": "r",
+          "type": "room"
+      }]
+        },
+          "right": {
+          "type": "and",
+          "left": {
+          "type": "predicate",
+          "name": "presence",
+          "parameters": [{
+          "name": "a",
+          "type": "area"
+      }]
+        },
+          "right": {
+          "type": "not",
+          "expression": {
+          "type": "predicate",
+          "name": "checked",
+          "parameters": [{
+          "name": "a",
+          "type": "area"
+      }]
+        }
+        }
+        }
+        },
+          "right": {
+          "type": "predicate",
+          "name": "room",
+          "parameters": [{
+          "name": "r",
+          "type": "room"
+      }]
+        }
+        },
+      "tasks": [
+          {
+    "name": "adjust-for-presence",
+    "type": "predicate",
+    "parameters": [
+        {
+    "term": "?a",
+    "type": "Var"
+}
+    ]
+},
+        {
+    "name": "bk-check-area",
+    "type": "predicate",
+    "parameters": [
+        {
+    "term": "?a",
+    "type": "Var"
+}
+    ]
+},
+        {
+    "name": "adjust",
+    "type": "predicate",
+    "parameters": [
+        {
+    "term": "?r",
+    "type": "Var"
+}
+    ]
+}
+      ]
+    },
+                        {
+      "name": "adjust-area-for-absence",
+      "preconditions": {
+          "type": "and",
+          "left": {
+          "type": "and",
+          "left": {
+          "type": "predicate",
+          "name": "in",
+          "parameters": [{
+          "name": "a",
+          "type": "area"
+      },{
+          "name": "r",
+          "type": "room"
+      }]
+        },
+          "right": {
+          "type": "and",
+          "left": {
+          "type": "not",
+          "expression": {
+          "type": "predicate",
+          "name": "presence",
+          "parameters": [{
+          "name": "a",
+          "type": "area"
+      }]
+        }
+        },
+          "right": {
+          "type": "not",
+          "expression": {
+          "type": "predicate",
+          "name": "checked",
+          "parameters": [{
+          "name": "a",
+          "type": "area"
+      }]
+        }
+        }
+        }
+        },
+          "right": {
+          "type": "predicate",
+          "name": "room",
+          "parameters": [{
+          "name": "r",
+          "type": "room"
+      }]
+        }
+        },
+      "tasks": [
+          {
+    "name": "adjust-for-absence",
+    "type": "predicate",
+    "parameters": [
+        {
+    "term": "?a",
+    "type": "Var"
+}
+    ]
+},
+        {
+    "name": "bk-check-area",
+    "type": "predicate",
+    "parameters": [
+        {
+    "term": "?a",
+    "type": "Var"
+}
+    ]
+},
+        {
+    "name": "adjust",
+    "type": "predicate",
+    "parameters": [
+        {
+    "term": "?r",
+    "type": "Var"
+}
+    ]
+}
+      ]
+    },
+                        {
+      "name": "all-areas-checked",
+      "preconditions": {
+          "type": "predicate",
+          "name": "room",
+          "parameters": [{
+          "name": "r",
+          "type": "room"
+      }]
+        },
+      "tasks": [
+          
+      ]
+    }
+        ]
+    },
+                {
+        "name": "decrease-level",
+        "parameters": [
+            {
+          "name": "a",
+          "type": "area"
+      }
+        ],
+        "methods": [
+            {
+      "name": "sufficient-light-level-still-lamps-to-turned-off",
+      "preconditions": {
+          "type": "and",
+          "left": {
+          "type": "and",
+          "left": {
+          "type": "unknown",
+          "class": "ExpressionComparison"
+        },
+          "right": {
+          "type": "and",
+          "left": {
+          "type": "or",
+          "left": {
+          "type": "predicate",
+          "name": "in",
+          "parameters": [{
+          "name": "l",
+          "type": "regularlamp"
+      },{
+          "name": "a",
+          "type": "area"
+      }]
+        },
+          "right": {
+          "type": "predicate",
+          "name": "near-by",
+          "parameters": [{
+          "name": "l",
+          "type": "regularlamp"
+      },{
+          "name": "a",
+          "type": "area"
+      }]
+        }
+        },
+          "right": {
+          "type": "and",
+          "left": {
+          "type": "predicate",
+          "name": "regularlamp",
+          "parameters": [{
+          "name": "l",
+          "type": "regularlamp"
+      }]
+        },
+          "right": {
+          "type": "predicate",
+          "name": "turned",
+          "parameters": [{
+          "name": "l",
+          "type": "regularlamp"
+      }]
+        }
+        }
+        }
+        },
+          "right": {
+          "type": "predicate",
+          "name": "area",
+          "parameters": [{
+          "name": "a",
+          "type": "area"
+      }]
+        }
+        },
+      "tasks": [
+          {
+    "name": "turn-off-lamp",
+    "type": "predicate",
+    "parameters": [
+        {
+    "term": "?l",
+    "type": "Var"
+}
+    ]
+},
+        {
+    "name": "adjust-light-level-by-decreasing",
+    "type": "predicate",
+    "parameters": [
+        {
+    "term": "?l",
+    "type": "Var"
+}
+    ]
+},
+        {
+    "name": "decrease-level",
+    "type": "predicate",
+    "parameters": [
+        {
+    "term": "?a",
+    "type": "Var"
+}
+    ]
+}
+      ]
+    },
+                        {
+      "name": "excess-light-level-but-all-lamps-turned-off",
+      "preconditions": {
+          "type": "predicate",
+          "name": "area",
+          "parameters": [{
+          "name": "a",
+          "type": "area"
+      }]
+        },
+      "tasks": [
+          {
+    "name": "bk-uncheck-lamps",
+    "type": "predicate",
+    "parameters": [
+        {
+    "term": "?a",
+    "type": "Var"
+}
+    ]
+}
+      ]
+    }
+        ]
+    },
+                {
+        "name": "adjust-light-level-by-increasing",
+        "parameters": [
+            {
+          "name": "l",
+          "type": "regularlamp"
+      }
+        ],
+        "methods": [
+            {
+      "name": "lamp-belongs-directly-to-an-area",
+      "preconditions": {
+          "type": "and",
+          "left": {
+          "type": "and",
+          "left": {
+          "type": "predicate",
+          "name": "in",
+          "parameters": [{
+          "name": "l",
+          "type": "regularlamp"
+      },{
+          "name": "a",
+          "type": "area"
+      }]
+        },
+          "right": {
+          "type": "not",
+          "expression": {
+          "type": "predicate",
+          "name": "checked",
+          "parameters": [{
+          "name": "l",
+          "type": "regularlamp"
+      },{
+          "name": "a",
+          "type": "area"
+      }]
+        }
+        }
+        },
+          "right": {
+          "type": "predicate",
+          "name": "regularlamp",
+          "parameters": [{
+          "name": "l",
+          "type": "regularlamp"
+      }]
+        }
+        },
+      "tasks": [
+          {
+    "name": "bk-increase-direct",
+    "type": "predicate",
+    "parameters": [
+        {
+    "term": "?a",
+    "type": "Var"
+}
+    ]
+},
+        {
+    "name": "bk-check",
+    "type": "predicate",
+    "parameters": [
+        {
+    "term": "?l",
+    "type": "Var"
+},
+                {
+    "term": "?a",
+    "type": "Var"
+}
+    ]
+},
+        {
+    "name": "adjust-light-level-by-increasing",
+    "type": "predicate",
+    "parameters": [
+        {
+    "term": "?l",
+    "type": "Var"
+}
+    ]
+}
+      ]
+    },
+                        {
+      "name": "lamp-is-near-by-other-areas",
+      "preconditions": {
+          "type": "and",
+          "left": {
+          "type": "and",
+          "left": {
+          "type": "predicate",
+          "name": "near-by",
+          "parameters": [{
+          "name": "l",
+          "type": "regularlamp"
+      },{
+          "name": "a",
+          "type": "area"
+      }]
+        },
+          "right": {
+          "type": "not",
+          "expression": {
+          "type": "predicate",
+          "name": "checked",
+          "parameters": [{
+          "name": "l",
+          "type": "regularlamp"
+      },{
+          "name": "a",
+          "type": "area"
+      }]
+        }
+        }
+        },
+          "right": {
+          "type": "predicate",
+          "name": "regularlamp",
+          "parameters": [{
+          "name": "l",
+          "type": "regularlamp"
+      }]
+        }
+        },
+      "tasks": [
+          {
+    "name": "bk-increase-near-by",
+    "type": "predicate",
+    "parameters": [
+        {
+    "term": "?a",
+    "type": "Var"
+}
+    ]
+},
+        {
+    "name": "bk-check",
+    "type": "predicate",
+    "parameters": [
+        {
+    "term": "?l",
+    "type": "Var"
+},
+                {
+    "term": "?a",
+    "type": "Var"
+}
+    ]
+},
+        {
+    "name": "adjust-light-level-by-increasing",
+    "type": "predicate",
+    "parameters": [
+        {
+    "term": "?l",
+    "type": "Var"
+}
+    ]
+}
+      ]
+    },
+                        {
+      "name": "all-done",
+      "preconditions": {
+          "type": "predicate",
+          "name": "regularlamp",
+          "parameters": [{
+          "name": "l",
+          "type": "regularlamp"
+      }]
+        },
+      "tasks": [
+          
+      ]
+    }
+        ]
+    },
+                {
+        "name": "increase-level",
+        "parameters": [
+            {
+          "name": "a",
+          "type": "area"
+      }
+        ],
+        "methods": [
+            {
+      "name": "light-level-is-ok",
+      "preconditions": {
+          "type": "and",
+          "left": {
+          "type": "unknown",
+          "class": "ExpressionComparison"
+        },
+          "right": {
+          "type": "predicate",
+          "name": "area",
+          "parameters": [{
+          "name": "a",
+          "type": "area"
+      }]
+        }
+        },
+      "tasks": [
+          {
+    "name": "bk-uncheck-lamps",
+    "type": "predicate",
+    "parameters": [
+        {
+    "term": "?a",
+    "type": "Var"
+}
+    ]
+}
+      ]
+    },
+                        {
+      "name": "deficient-light-level-still-lamps-to-turned-on",
+      "preconditions": {
+          "type": "and",
+          "left": {
+          "type": "and",
+          "left": {
+          "type": "unknown",
+          "class": "ExpressionComparison"
+        },
+          "right": {
+          "type": "and",
+          "left": {
+          "type": "or",
+          "left": {
+          "type": "predicate",
+          "name": "in",
+          "parameters": [{
+          "name": "l",
+          "type": "regularlamp"
+      },{
+          "name": "a",
+          "type": "area"
+      }]
+        },
+          "right": {
+          "type": "predicate",
+          "name": "near-by",
+          "parameters": [{
+          "name": "l",
+          "type": "regularlamp"
+      },{
+          "name": "a",
+          "type": "area"
+      }]
+        }
+        },
+          "right": {
+          "type": "and",
+          "left": {
+          "type": "predicate",
+          "name": "regularlamp",
+          "parameters": [{
+          "name": "l",
+          "type": "regularlamp"
+      }]
+        },
+          "right": {
+          "type": "not",
+          "expression": {
+          "type": "predicate",
+          "name": "turned",
+          "parameters": [{
+          "name": "l",
+          "type": "regularlamp"
+      }]
+        }
+        }
+        }
+        }
+        },
+          "right": {
+          "type": "predicate",
+          "name": "area",
+          "parameters": [{
+          "name": "a",
+          "type": "area"
+      }]
+        }
+        },
+      "tasks": [
+          {
+    "name": "turn-on-lamp",
+    "type": "predicate",
+    "parameters": [
+        {
+    "term": "?l",
+    "type": "Var"
+}
+    ]
+},
+        {
+    "name": "adjust-light-level-by-increasing",
+    "type": "predicate",
+    "parameters": [
+        {
+    "term": "?l",
+    "type": "Var"
+}
+    ]
+},
+        {
+    "name": "increase-level",
+    "type": "predicate",
+    "parameters": [
+        {
+    "term": "?a",
+    "type": "Var"
+}
+    ]
+}
+      ]
+    },
+                        {
+      "name": "deficient-light-level-but-all-lamps-turned-on",
+      "preconditions": {
+          "type": "predicate",
+          "name": "area",
+          "parameters": [{
+          "name": "a",
+          "type": "area"
+      }]
+        },
+      "tasks": [
+          {
+    "name": "bk-uncheck-lamps",
+    "type": "predicate",
+    "parameters": [
+        {
+    "term": "?a",
+    "type": "Var"
+}
+    ]
+}
+      ]
+    }
+        ]
+    },
+                {
+        "name": "adjust-for-presence",
+        "parameters": [
+            {
+          "name": "a",
+          "type": "area"
+      }
+        ],
+        "methods": [
+            {
+      "name": "sufficient-light-level",
+      "preconditions": {
+          "type": "and",
+          "left": {
+          "type": "and",
+          "left": {
+          "type": "unknown",
+          "class": "ExpressionComparison"
+        },
+          "right": {
+          "type": "unknown",
+          "class": "ExpressionComparison"
+        }
+        },
+          "right": {
+          "type": "predicate",
+          "name": "area",
+          "parameters": [{
+          "name": "a",
+          "type": "area"
+      }]
+        }
+        },
+      "tasks": [
+          {
+    "name": "decrease-level",
+    "type": "predicate",
+    "parameters": [
+        {
+    "term": "?a",
+    "type": "Var"
+}
+    ]
+}
+      ]
+    },
+                        {
+      "name": "deficient-light-level",
+      "preconditions": {
+          "type": "and",
+          "left": {
+          "type": "unknown",
+          "class": "ExpressionComparison"
+        },
+          "right": {
+          "type": "predicate",
+          "name": "area",
+          "parameters": [{
+          "name": "a",
+          "type": "area"
+      }]
+        }
+        },
+      "tasks": [
+          {
+    "name": "increase-level",
+    "type": "predicate",
+    "parameters": [
+        {
+    "term": "?a",
+    "type": "Var"
+}
+    ]
+}
+      ]
+    },
+                        {
+      "name": "excess-light-level",
+      "preconditions": {
+          "type": "and",
+          "left": {
+          "type": "unknown",
+          "class": "ExpressionComparison"
+        },
+          "right": {
+          "type": "predicate",
+          "name": "area",
+          "parameters": [{
+          "name": "a",
+          "type": "area"
+      }]
+        }
+        },
+      "tasks": [
+          {
+    "name": "decrease-level",
+    "type": "predicate",
+    "parameters": [
+        {
+    "term": "?a",
+    "type": "Var"
+}
+    ]
+}
+      ]
+    }
+        ]
+    }
+            ]
+        }
+    }
+  }

@@ -1,0 +1,2396 @@
+{
+    "deployment": {
+        "requirements": ["T",
+        "NP",
+        "UP",
+        "NF",
+        "CE"],
+        "problem": {
+            "goal": {
+                "tasks": [
+                    {
+    "name": "run-configuration",
+    "type": "predicate",
+    "parameters": [
+        {
+    "term": "dashboard",
+    "type": "Constant"
+}
+    ]
+}
+                ]
+            },
+            "init": [
+                {
+        "name": "component",
+        "parameters": ["apache2"],
+        "type": "predicate"
+      },
+                {
+        "name": "component",
+        "parameters": ["cassandra"],
+        "type": "predicate"
+      },
+                {
+        "name": "component",
+        "parameters": ["dashboard"],
+        "type": "predicate"
+      },
+                {
+        "name": "running-provide",
+        "parameters": ["cassandra", "cass-up"],
+        "type": "predicate"
+      },
+                {
+        "name": "running-require",
+        "parameters": ["dashboard", "cass-up"],
+        "type": "predicate"
+      },
+                {
+        "name": "running-require",
+        "parameters": ["dashboard", "httpd"],
+        "type": "predicate"
+      },
+                {
+        "name": "instance-number",
+        "parameters": ["0.0"],
+        "type": "predicate"
+      },
+                {
+        "name": "installed-require",
+        "parameters": ["dashboard", "httpd"],
+        "type": "predicate"
+      },
+                {
+        "name": "installed-provide",
+        "parameters": ["cassandra", "cass"],
+        "type": "predicate"
+      },
+                {
+        "name": "installed-provide",
+        "parameters": ["apache2", "httpd"],
+        "type": "predicate"
+      },
+                {
+        "name": "port",
+        "parameters": ["cass-up"],
+        "type": "predicate"
+      },
+                {
+        "name": "port",
+        "parameters": ["cass"],
+        "type": "predicate"
+      },
+                {
+        "name": "port",
+        "parameters": ["httpd"],
+        "type": "predicate"
+      }
+            ]
+        },
+        "domain": {
+            "name": "deployment",
+            "primitive_tasks": [
+                {
+            "name": "run",
+            "parameters": [
+                {
+          "name": "i",
+          "type": "instance"
+      }
+            ],
+            "precondition": {
+          "type": "and",
+          "left": {
+          "type": "and",
+          "left": {
+          "type": "not",
+          "expression": {
+          "type": "predicate",
+          "name": "running",
+          "parameters": [{
+          "name": "i",
+          "type": "instance"
+      }]
+        }
+        },
+          "right": {
+          "type": "predicate",
+          "name": "installed",
+          "parameters": [{
+          "name": "i",
+          "type": "instance"
+      }]
+        }
+        },
+          "right": {
+          "type": "predicate",
+          "name": "instance",
+          "parameters": [{
+          "name": "i",
+          "type": "instance"
+      }]
+        }
+        },
+            "effect": [{
+          "type": "forall",
+          "expression": {
+          "type": "and",
+          "left": {
+          "type": "predicate",
+          "name": "port",
+          "parameters": [{
+          "name": "p",
+          "type": "port"
+      }]
+        },
+          "right": {
+          "type": "and",
+          "left": {
+          "type": "predicate",
+          "name": "running-provide",
+          "parameters": [{
+          "name": "c",
+          "type": "component"
+      },{
+          "name": "p",
+          "type": "port"
+      }]
+        },
+          "right": {
+          "type": "predicate",
+          "name": "type",
+          "parameters": [{
+          "name": "i",
+          "type": "instance"
+      },{
+          "name": "c",
+          "type": "component"
+      }]
+        }
+        }
+        },
+          "predicates": [{
+          "type": "predicate",
+          "name": "active",
+          "parameters": [{
+          "name": "p",
+          "type": "port"
+      }]
+        }],
+          "add_list": true
+        },
+            {
+          "type": "predicate",
+          "name": "running",
+          "parameters": [{
+          "name": "i",
+          "type": "instance"
+      }]
+        }, {
+          "type": "forall",
+          "expression": {
+          "type": "and",
+          "left": {
+          "type": "predicate",
+          "name": "port",
+          "parameters": [{
+          "name": "p",
+          "type": "port"
+      }]
+        },
+          "right": {
+          "type": "and",
+          "left": {
+          "type": "predicate",
+          "name": "installed-provide",
+          "parameters": [{
+          "name": "c",
+          "type": "component"
+      },{
+          "name": "p",
+          "type": "port"
+      }]
+        },
+          "right": {
+          "type": "predicate",
+          "name": "type",
+          "parameters": [{
+          "name": "i",
+          "type": "instance"
+      },{
+          "name": "c",
+          "type": "component"
+      }]
+        }
+        }
+        },
+          "predicates": [{
+          "type": "not",
+          "expression": [{
+            "type": "predicate",
+            "name": "active",
+            "parameters": [{
+          "name": "p",
+          "type": "port"
+      }]
+          }]
+        }],
+          "add_list": false
+        }]
+        },
+                {
+            "name": "bind",
+            "parameters": [
+                {
+          "name": "p",
+          "type": "port"
+      },
+                        {
+          "name": "i1",
+          "type": "instance"
+      },
+                        {
+          "name": "i2",
+          "type": "instance"
+      }
+            ],
+            "precondition": {
+          "type": "and",
+          "left": {
+          "type": "predicate",
+          "name": "port",
+          "parameters": [{
+          "name": "p",
+          "type": "port"
+      }]
+        },
+          "right": {
+          "type": "and",
+          "left": {
+          "type": "predicate",
+          "name": "instance",
+          "parameters": [{
+          "name": "i1",
+          "type": "instance"
+      }]
+        },
+          "right": {
+          "type": "predicate",
+          "name": "instance",
+          "parameters": [{
+          "name": "i2",
+          "type": "instance"
+      }]
+        }
+        }
+        },
+            "effect": [{
+          "type": "predicate",
+          "name": "bound",
+          "parameters": [{
+          "name": "p",
+          "type": "port"
+      },{
+          "name": "i1",
+          "type": "instance"
+      },{
+          "name": "i2",
+          "type": "instance"
+      }]
+        }]
+        },
+                {
+            "name": "createinstance",
+            "parameters": [
+                {
+          "name": "c",
+          "type": "component"
+      }
+            ],
+            "precondition": {
+          "type": "predicate",
+          "name": "component",
+          "parameters": [{
+          "name": "c",
+          "type": "component"
+      }]
+        },
+            "effect": [{
+          "type": "predicate",
+          "name": "type",
+          "parameters": [{
+          "name": "unknown",
+          "type": "unknown"
+      },{
+          "name": "c",
+          "type": "component"
+      }]
+        },
+            {
+          "type": "predicate",
+          "name": "instance",
+          "parameters": [{
+          "name": "unknown",
+          "type": "unknown"
+      }]
+        }]
+        },
+                {
+            "name": "terminate",
+            "parameters": [
+                {
+          "name": "i",
+          "type": "instance"
+      }
+            ],
+            "precondition": {
+          "type": "and",
+          "left": {
+          "type": "and",
+          "left": {
+          "type": "predicate",
+          "name": "installed",
+          "parameters": [{
+          "name": "i",
+          "type": "instance"
+      }]
+        },
+          "right": {
+          "type": "not",
+          "expression": {
+          "type": "predicate",
+          "name": "bound",
+          "parameters": [{
+          "name": "p",
+          "type": "port"
+      },{
+          "name": "i",
+          "type": "instance"
+      },{
+          "name": "i1",
+          "type": "instance"
+      }]
+        }
+        }
+        },
+          "right": {
+          "type": "predicate",
+          "name": "instance",
+          "parameters": [{
+          "name": "i",
+          "type": "instance"
+      }]
+        }
+        },
+            "effect": [{
+          "type": "not",
+          "expression": [{
+            "type": "predicate",
+            "name": "installed",
+            "parameters": [{
+          "name": "i",
+          "type": "instance"
+      }]
+          }]
+        }]
+        },
+                {
+            "name": "unbind",
+            "parameters": [
+                {
+          "name": "p",
+          "type": "port"
+      },
+                        {
+          "name": "i1",
+          "type": "instance"
+      },
+                        {
+          "name": "i2",
+          "type": "instance"
+      }
+            ],
+            "precondition": {
+          "type": "and",
+          "left": {
+          "type": "predicate",
+          "name": "port",
+          "parameters": [{
+          "name": "p",
+          "type": "port"
+      }]
+        },
+          "right": {
+          "type": "and",
+          "left": {
+          "type": "predicate",
+          "name": "instance",
+          "parameters": [{
+          "name": "i1",
+          "type": "instance"
+      }]
+        },
+          "right": {
+          "type": "predicate",
+          "name": "instance",
+          "parameters": [{
+          "name": "i2",
+          "type": "instance"
+      }]
+        }
+        }
+        },
+            "effect": [{
+          "type": "not",
+          "expression": [{
+            "type": "predicate",
+            "name": "bound",
+            "parameters": [{
+          "name": "p",
+          "type": "port"
+      },{
+          "name": "i1",
+          "type": "instance"
+      },{
+          "name": "i2",
+          "type": "instance"
+      }]
+          }]
+        }]
+        },
+                {
+            "name": "start",
+            "parameters": [
+                {
+          "name": "i",
+          "type": "instance"
+      }
+            ],
+            "precondition": {
+          "type": "and",
+          "left": {
+          "type": "not",
+          "expression": {
+          "type": "predicate",
+          "name": "installed",
+          "parameters": [{
+          "name": "i",
+          "type": "instance"
+      }]
+        }
+        },
+          "right": {
+          "type": "predicate",
+          "name": "instance",
+          "parameters": [{
+          "name": "i",
+          "type": "instance"
+      }]
+        }
+        },
+            "effect": [{
+          "type": "forall",
+          "expression": {
+          "type": "and",
+          "left": {
+          "type": "predicate",
+          "name": "port",
+          "parameters": [{
+          "name": "p",
+          "type": "port"
+      }]
+        },
+          "right": {
+          "type": "and",
+          "left": {
+          "type": "predicate",
+          "name": "installed-provide",
+          "parameters": [{
+          "name": "c",
+          "type": "component"
+      },{
+          "name": "p",
+          "type": "port"
+      }]
+        },
+          "right": {
+          "type": "predicate",
+          "name": "type",
+          "parameters": [{
+          "name": "i",
+          "type": "instance"
+      },{
+          "name": "c",
+          "type": "component"
+      }]
+        }
+        }
+        },
+          "predicates": [{
+          "type": "predicate",
+          "name": "active",
+          "parameters": [{
+          "name": "p",
+          "type": "port"
+      }]
+        }],
+          "add_list": true
+        },
+            {
+          "type": "predicate",
+          "name": "installed",
+          "parameters": [{
+          "name": "i",
+          "type": "instance"
+      }]
+        }]
+        },
+                {
+            "name": "stop",
+            "parameters": [
+                {
+          "name": "i",
+          "type": "instance"
+      }
+            ],
+            "precondition": {
+          "type": "and",
+          "left": {
+          "type": "and",
+          "left": {
+          "type": "predicate",
+          "name": "running",
+          "parameters": [{
+          "name": "i",
+          "type": "instance"
+      }]
+        },
+          "right": {
+          "type": "not",
+          "expression": {
+          "type": "predicate",
+          "name": "bound",
+          "parameters": [{
+          "name": "p",
+          "type": "port"
+      },{
+          "name": "i",
+          "type": "instance"
+      },{
+          "name": "i1",
+          "type": "instance"
+      }]
+        }
+        }
+        },
+          "right": {
+          "type": "predicate",
+          "name": "instance",
+          "parameters": [{
+          "name": "i",
+          "type": "instance"
+      }]
+        }
+        },
+            "effect": [{
+          "type": "not",
+          "expression": [{
+            "type": "predicate",
+            "name": "running",
+            "parameters": [{
+          "name": "i",
+          "type": "instance"
+      }]
+          }]
+        }]
+        }
+            ],
+            "compund_tasks": [
+                {
+        "name": "makerun",
+        "parameters": [
+            {
+          "name": "i",
+          "type": "instance"
+      }
+        ],
+        "methods": [
+            {
+      "name": "port-is-active-and-bound",
+      "preconditions": {
+          "type": "and",
+          "left": {
+          "type": "and",
+          "left": {
+          "type": "predicate",
+          "name": "type",
+          "parameters": [{
+          "name": "i",
+          "type": "instance"
+      },{
+          "name": "c",
+          "type": "component"
+      }]
+        },
+          "right": {
+          "type": "unknown",
+          "class": "ExpressionForall"
+        }
+        },
+          "right": {
+          "type": "predicate",
+          "name": "instance",
+          "parameters": [{
+          "name": "i",
+          "type": "instance"
+      }]
+        }
+        },
+      "tasks": [
+          {
+    "name": "deactivateport",
+    "type": "predicate",
+    "parameters": [
+        {
+    "term": "?c",
+    "type": "Var"
+},
+                {
+    "term": "?i",
+    "type": "Var"
+}
+    ]
+}
+      ]
+    },
+                        {
+      "name": "port-is-active-and-unbound",
+      "preconditions": {
+          "type": "and",
+          "left": {
+          "type": "and",
+          "left": {
+          "type": "predicate",
+          "name": "type",
+          "parameters": [{
+          "name": "i",
+          "type": "instance"
+      },{
+          "name": "c",
+          "type": "component"
+      }]
+        },
+          "right": {
+          "type": "and",
+          "left": {
+          "type": "predicate",
+          "name": "running-require",
+          "parameters": [{
+          "name": "c",
+          "type": "component"
+      },{
+          "name": "p",
+          "type": "port"
+      }]
+        },
+          "right": {
+          "type": "and",
+          "left": {
+          "type": "predicate",
+          "name": "active",
+          "parameters": [{
+          "name": "p",
+          "type": "port"
+      }]
+        },
+          "right": {
+          "type": "and",
+          "left": {
+          "type": "predicate",
+          "name": "installed",
+          "parameters": [{
+          "name": "i",
+          "type": "instance"
+      }]
+        },
+          "right": {
+          "type": "and",
+          "left": {
+          "type": "predicate",
+          "name": "type",
+          "parameters": [{
+          "name": "i1",
+          "type": "instance"
+      },{
+          "name": "c1",
+          "type": "notype"
+      }]
+        },
+          "right": {
+          "type": "and",
+          "left": {
+          "type": "not",
+          "expression": {
+          "type": "predicate",
+          "name": "bound",
+          "parameters": [{
+          "name": "p",
+          "type": "port"
+      },{
+          "name": "i",
+          "type": "instance"
+      },{
+          "name": "i1",
+          "type": "instance"
+      }]
+        }
+        },
+          "right": {
+          "type": "or",
+          "left": {
+          "type": "and",
+          "left": {
+          "type": "predicate",
+          "name": "installed-provide",
+          "parameters": [{
+          "name": "c1",
+          "type": "notype"
+      },{
+          "name": "p",
+          "type": "port"
+      }]
+        },
+          "right": {
+          "type": "predicate",
+          "name": "installed",
+          "parameters": [{
+          "name": "i1",
+          "type": "instance"
+      }]
+        }
+        },
+          "right": {
+          "type": "and",
+          "left": {
+          "type": "predicate",
+          "name": "running-provide",
+          "parameters": [{
+          "name": "c1",
+          "type": "notype"
+      },{
+          "name": "p",
+          "type": "port"
+      }]
+        },
+          "right": {
+          "type": "predicate",
+          "name": "running",
+          "parameters": [{
+          "name": "i1",
+          "type": "instance"
+      }]
+        }
+        }
+        }
+        }
+        }
+        }
+        }
+        }
+        },
+          "right": {
+          "type": "predicate",
+          "name": "instance",
+          "parameters": [{
+          "name": "i",
+          "type": "instance"
+      }]
+        }
+        },
+      "tasks": [
+          {
+    "name": "bind",
+    "type": "predicate",
+    "parameters": [
+        {
+    "term": "?p",
+    "type": "Var"
+},
+                {
+    "term": "?i",
+    "type": "Var"
+},
+                {
+    "term": "?i1",
+    "type": "Var"
+}
+    ]
+},
+        {
+    "name": "makerun",
+    "type": "predicate",
+    "parameters": [
+        {
+    "term": "?i",
+    "type": "Var"
+}
+    ]
+}
+      ]
+    },
+                        {
+      "name": "",
+      "preconditions": {
+          "type": "and",
+          "left": {
+          "type": "and",
+          "left": {
+          "type": "predicate",
+          "name": "type",
+          "parameters": [{
+          "name": "i",
+          "type": "instance"
+      },{
+          "name": "c",
+          "type": "component"
+      }]
+        },
+          "right": {
+          "type": "and",
+          "left": {
+          "type": "predicate",
+          "name": "running-require",
+          "parameters": [{
+          "name": "c",
+          "type": "component"
+      },{
+          "name": "p",
+          "type": "port"
+      }]
+        },
+          "right": {
+          "type": "not",
+          "expression": {
+          "type": "predicate",
+          "name": "active",
+          "parameters": [{
+          "name": "p",
+          "type": "port"
+      }]
+        }
+        }
+        }
+        },
+          "right": {
+          "type": "predicate",
+          "name": "instance",
+          "parameters": [{
+          "name": "i",
+          "type": "instance"
+      }]
+        }
+        },
+      "tasks": [
+          {
+    "name": "activateport",
+    "type": "predicate",
+    "parameters": [
+        {
+    "term": "?c",
+    "type": "Var"
+},
+                {
+    "term": "?p",
+    "type": "Var"
+}
+    ]
+},
+        {
+    "name": "makerun",
+    "type": "predicate",
+    "parameters": [
+        {
+    "term": "?i",
+    "type": "Var"
+}
+    ]
+}
+      ]
+    },
+                        {
+      "name": "there-are-no-require-ports",
+      "preconditions": {
+          "type": "and",
+          "left": {
+          "type": "predicate",
+          "name": "type",
+          "parameters": [{
+          "name": "i",
+          "type": "instance"
+      },{
+          "name": "c",
+          "type": "component"
+      }]
+        },
+          "right": {
+          "type": "predicate",
+          "name": "instance",
+          "parameters": [{
+          "name": "i",
+          "type": "instance"
+      }]
+        }
+        },
+      "tasks": [
+          {
+    "name": "deactivateport",
+    "type": "predicate",
+    "parameters": [
+        {
+    "term": "?c",
+    "type": "Var"
+},
+                {
+    "term": "?i",
+    "type": "Var"
+}
+    ]
+}
+      ]
+    }
+        ]
+    },
+                {
+        "name": "unbindports",
+        "parameters": [
+            {
+          "name": "i",
+          "type": "instance"
+      }
+        ],
+        "methods": [
+            {
+      "name": "there-is-bound-port-but-needed-for-running",
+      "preconditions": {
+          "type": "and",
+          "left": {
+          "type": "and",
+          "left": {
+          "type": "predicate",
+          "name": "type",
+          "parameters": [{
+          "name": "i",
+          "type": "instance"
+      },{
+          "name": "c",
+          "type": "component"
+      }]
+        },
+          "right": {
+          "type": "and",
+          "left": {
+          "type": "predicate",
+          "name": "installed-require",
+          "parameters": [{
+          "name": "c",
+          "type": "component"
+      },{
+          "name": "p",
+          "type": "port"
+      }]
+        },
+          "right": {
+          "type": "and",
+          "left": {
+          "type": "predicate",
+          "name": "bound",
+          "parameters": [{
+          "name": "p",
+          "type": "port"
+      },{
+          "name": "i",
+          "type": "instance"
+      },{
+          "name": "i1",
+          "type": "instance"
+      }]
+        },
+          "right": {
+          "type": "predicate",
+          "name": "running-require",
+          "parameters": [{
+          "name": "c",
+          "type": "component"
+      },{
+          "name": "p",
+          "type": "port"
+      }]
+        }
+        }
+        }
+        },
+          "right": {
+          "type": "predicate",
+          "name": "instance",
+          "parameters": [{
+          "name": "i",
+          "type": "instance"
+      }]
+        }
+        },
+      "tasks": [
+          
+      ]
+    },
+                        {
+      "name": "there-is-bound-port",
+      "preconditions": {
+          "type": "and",
+          "left": {
+          "type": "and",
+          "left": {
+          "type": "predicate",
+          "name": "type",
+          "parameters": [{
+          "name": "i",
+          "type": "instance"
+      },{
+          "name": "c",
+          "type": "component"
+      }]
+        },
+          "right": {
+          "type": "and",
+          "left": {
+          "type": "predicate",
+          "name": "installed-require",
+          "parameters": [{
+          "name": "c",
+          "type": "component"
+      },{
+          "name": "p",
+          "type": "port"
+      }]
+        },
+          "right": {
+          "type": "predicate",
+          "name": "bound",
+          "parameters": [{
+          "name": "p",
+          "type": "port"
+      },{
+          "name": "i",
+          "type": "instance"
+      },{
+          "name": "i1",
+          "type": "instance"
+      }]
+        }
+        }
+        },
+          "right": {
+          "type": "predicate",
+          "name": "instance",
+          "parameters": [{
+          "name": "i",
+          "type": "instance"
+      }]
+        }
+        },
+      "tasks": [
+          {
+    "name": "unbind",
+    "type": "predicate",
+    "parameters": [
+        {
+    "term": "?p",
+    "type": "Var"
+},
+                {
+    "term": "?i",
+    "type": "Var"
+},
+                {
+    "term": "?i1",
+    "type": "Var"
+}
+    ]
+},
+        {
+    "name": "unbindports",
+    "type": "predicate",
+    "parameters": [
+        {
+    "term": "?i",
+    "type": "Var"
+}
+    ]
+}
+      ]
+    },
+                        {
+      "name": "do-nothing",
+      "preconditions": {
+          "type": "predicate",
+          "name": "instance",
+          "parameters": [{
+          "name": "i",
+          "type": "instance"
+      }]
+        },
+      "tasks": [
+          
+      ]
+    }
+        ]
+    },
+                {
+        "name": "deactivateport",
+        "parameters": [
+            {
+          "name": "c",
+          "type": "component"
+      },
+                        {
+          "name": "i",
+          "type": "instance"
+      }
+        ],
+        "methods": [
+            {
+      "name": "there-is-bound-port-but-needed-for-running",
+      "preconditions": {
+          "type": "and",
+          "left": {
+          "type": "and",
+          "left": {
+          "type": "predicate",
+          "name": "type",
+          "parameters": [{
+          "name": "i",
+          "type": "instance"
+      },{
+          "name": "c",
+          "type": "component"
+      }]
+        },
+          "right": {
+          "type": "and",
+          "left": {
+          "type": "predicate",
+          "name": "installed-provide",
+          "parameters": [{
+          "name": "c",
+          "type": "component"
+      },{
+          "name": "p",
+          "type": "port"
+      }]
+        },
+          "right": {
+          "type": "and",
+          "left": {
+          "type": "predicate",
+          "name": "bound",
+          "parameters": [{
+          "name": "p",
+          "type": "port"
+      },{
+          "name": "i1",
+          "type": "instance"
+      },{
+          "name": "i",
+          "type": "instance"
+      }]
+        },
+          "right": {
+          "type": "and",
+          "left": {
+          "type": "predicate",
+          "name": "installed",
+          "parameters": [{
+          "name": "i",
+          "type": "instance"
+      }]
+        },
+          "right": {
+          "type": "predicate",
+          "name": "running-provide",
+          "parameters": [{
+          "name": "c",
+          "type": "component"
+      },{
+          "name": "p",
+          "type": "port"
+      }]
+        }
+        }
+        }
+        }
+        },
+          "right": {
+          "type": "and",
+          "left": {
+          "type": "predicate",
+          "name": "component",
+          "parameters": [{
+          "name": "c",
+          "type": "component"
+      }]
+        },
+          "right": {
+          "type": "predicate",
+          "name": "instance",
+          "parameters": [{
+          "name": "i",
+          "type": "instance"
+      }]
+        }
+        }
+        },
+      "tasks": [
+          {
+    "name": "run",
+    "type": "predicate",
+    "parameters": [
+        {
+    "term": "?i",
+    "type": "Var"
+}
+    ]
+},
+        {
+    "name": "unbindports",
+    "type": "predicate",
+    "parameters": [
+        {
+    "term": "?i",
+    "type": "Var"
+}
+    ]
+}
+      ]
+    },
+                        {
+      "name": "installed-provide-port-is-free",
+      "preconditions": {
+          "type": "and",
+          "left": {
+          "type": "and",
+          "left": {
+          "type": "predicate",
+          "name": "installed-provide",
+          "parameters": [{
+          "name": "c",
+          "type": "component"
+      },{
+          "name": "p",
+          "type": "port"
+      }]
+        },
+          "right": {
+          "type": "and",
+          "left": {
+          "type": "predicate",
+          "name": "type",
+          "parameters": [{
+          "name": "i",
+          "type": "instance"
+      },{
+          "name": "c",
+          "type": "component"
+      }]
+        },
+          "right": {
+          "type": "and",
+          "left": {
+          "type": "not",
+          "expression": {
+          "type": "predicate",
+          "name": "bound",
+          "parameters": [{
+          "name": "p",
+          "type": "port"
+      },{
+          "name": "i1",
+          "type": "instance"
+      },{
+          "name": "i",
+          "type": "instance"
+      }]
+        }
+        },
+          "right": {
+          "type": "predicate",
+          "name": "installed",
+          "parameters": [{
+          "name": "i",
+          "type": "instance"
+      }]
+        }
+        }
+        }
+        },
+          "right": {
+          "type": "and",
+          "left": {
+          "type": "predicate",
+          "name": "component",
+          "parameters": [{
+          "name": "c",
+          "type": "component"
+      }]
+        },
+          "right": {
+          "type": "predicate",
+          "name": "instance",
+          "parameters": [{
+          "name": "i",
+          "type": "instance"
+      }]
+        }
+        }
+        },
+      "tasks": [
+          {
+    "name": "run",
+    "type": "predicate",
+    "parameters": [
+        {
+    "term": "?i",
+    "type": "Var"
+}
+    ]
+},
+        {
+    "name": "unbindports",
+    "type": "predicate",
+    "parameters": [
+        {
+    "term": "?i",
+    "type": "Var"
+}
+    ]
+}
+      ]
+    },
+                        {
+      "name": "installed-provide-port-is-bound",
+      "preconditions": {
+          "type": "and",
+          "left": {
+          "type": "and",
+          "left": {
+          "type": "predicate",
+          "name": "installed-provide",
+          "parameters": [{
+          "name": "c",
+          "type": "component"
+      },{
+          "name": "p",
+          "type": "port"
+      }]
+        },
+          "right": {
+          "type": "and",
+          "left": {
+          "type": "predicate",
+          "name": "type",
+          "parameters": [{
+          "name": "i",
+          "type": "instance"
+      },{
+          "name": "c",
+          "type": "component"
+      }]
+        },
+          "right": {
+          "type": "and",
+          "left": {
+          "type": "predicate",
+          "name": "bound",
+          "parameters": [{
+          "name": "p",
+          "type": "port"
+      },{
+          "name": "i1",
+          "type": "instance"
+      },{
+          "name": "i",
+          "type": "instance"
+      }]
+        },
+          "right": {
+          "type": "predicate",
+          "name": "installed",
+          "parameters": [{
+          "name": "i",
+          "type": "instance"
+      }]
+        }
+        }
+        }
+        },
+          "right": {
+          "type": "and",
+          "left": {
+          "type": "predicate",
+          "name": "component",
+          "parameters": [{
+          "name": "c",
+          "type": "component"
+      }]
+        },
+          "right": {
+          "type": "predicate",
+          "name": "instance",
+          "parameters": [{
+          "name": "i",
+          "type": "instance"
+      }]
+        }
+        }
+        },
+      "tasks": [
+          {
+    "name": "run-configuration",
+    "type": "predicate",
+    "parameters": [
+        {
+    "term": "?c",
+    "type": "Var"
+}
+    ]
+}
+      ]
+    },
+                        {
+      "name": "free-to-run",
+      "preconditions": {
+          "type": "and",
+          "left": {
+          "type": "predicate",
+          "name": "component",
+          "parameters": [{
+          "name": "c",
+          "type": "component"
+      }]
+        },
+          "right": {
+          "type": "predicate",
+          "name": "instance",
+          "parameters": [{
+          "name": "i",
+          "type": "instance"
+      }]
+        }
+        },
+      "tasks": [
+          {
+    "name": "run",
+    "type": "predicate",
+    "parameters": [
+        {
+    "term": "?i",
+    "type": "Var"
+}
+    ]
+},
+        {
+    "name": "unbindports",
+    "type": "predicate",
+    "parameters": [
+        {
+    "term": "?i",
+    "type": "Var"
+}
+    ]
+}
+      ]
+    }
+        ]
+    },
+                {
+        "name": "activate",
+        "parameters": [
+            {
+          "name": "i",
+          "type": "instance"
+      }
+        ],
+        "methods": [
+            {
+      "name": "port-is-active-and-bound",
+      "preconditions": {
+          "type": "and",
+          "left": {
+          "type": "and",
+          "left": {
+          "type": "predicate",
+          "name": "type",
+          "parameters": [{
+          "name": "i",
+          "type": "instance"
+      },{
+          "name": "c",
+          "type": "component"
+      }]
+        },
+          "right": {
+          "type": "unknown",
+          "class": "ExpressionForall"
+        }
+        },
+          "right": {
+          "type": "predicate",
+          "name": "instance",
+          "parameters": [{
+          "name": "i",
+          "type": "instance"
+      }]
+        }
+        },
+      "tasks": [
+          {
+    "name": "start",
+    "type": "predicate",
+    "parameters": [
+        {
+    "term": "?i",
+    "type": "Var"
+}
+    ]
+}
+      ]
+    },
+                        {
+      "name": "port-is-active-and-unbound",
+      "preconditions": {
+          "type": "and",
+          "left": {
+          "type": "and",
+          "left": {
+          "type": "predicate",
+          "name": "installed-require",
+          "parameters": [{
+          "name": "c",
+          "type": "component"
+      },{
+          "name": "p",
+          "type": "port"
+      }]
+        },
+          "right": {
+          "type": "and",
+          "left": {
+          "type": "predicate",
+          "name": "active",
+          "parameters": [{
+          "name": "p",
+          "type": "port"
+      }]
+        },
+          "right": {
+          "type": "and",
+          "left": {
+          "type": "predicate",
+          "name": "type",
+          "parameters": [{
+          "name": "i",
+          "type": "instance"
+      },{
+          "name": "c",
+          "type": "component"
+      }]
+        },
+          "right": {
+          "type": "and",
+          "left": {
+          "type": "not",
+          "expression": {
+          "type": "predicate",
+          "name": "installed",
+          "parameters": [{
+          "name": "i",
+          "type": "instance"
+      }]
+        }
+        },
+          "right": {
+          "type": "and",
+          "left": {
+          "type": "predicate",
+          "name": "type",
+          "parameters": [{
+          "name": "i1",
+          "type": "instance"
+      },{
+          "name": "c1",
+          "type": "notype"
+      }]
+        },
+          "right": {
+          "type": "and",
+          "left": {
+          "type": "not",
+          "expression": {
+          "type": "predicate",
+          "name": "bound",
+          "parameters": [{
+          "name": "p",
+          "type": "port"
+      },{
+          "name": "i",
+          "type": "instance"
+      },{
+          "name": "i1",
+          "type": "instance"
+      }]
+        }
+        },
+          "right": {
+          "type": "and",
+          "left": {
+          "type": "or",
+          "left": {
+          "type": "predicate",
+          "name": "installed-provide",
+          "parameters": [{
+          "name": "c1",
+          "type": "notype"
+      },{
+          "name": "p",
+          "type": "port"
+      }]
+        },
+          "right": {
+          "type": "predicate",
+          "name": "running-provide",
+          "parameters": [{
+          "name": "c1",
+          "type": "notype"
+      },{
+          "name": "p",
+          "type": "port"
+      }]
+        }
+        },
+          "right": {
+          "type": "or",
+          "left": {
+          "type": "predicate",
+          "name": "installed",
+          "parameters": [{
+          "name": "i1",
+          "type": "instance"
+      }]
+        },
+          "right": {
+          "type": "predicate",
+          "name": "running",
+          "parameters": [{
+          "name": "i1",
+          "type": "instance"
+      }]
+        }
+        }
+        }
+        }
+        }
+        }
+        }
+        }
+        },
+          "right": {
+          "type": "predicate",
+          "name": "instance",
+          "parameters": [{
+          "name": "i",
+          "type": "instance"
+      }]
+        }
+        },
+      "tasks": [
+          {
+    "name": "bind",
+    "type": "predicate",
+    "parameters": [
+        {
+    "term": "?p",
+    "type": "Var"
+},
+                {
+    "term": "?i",
+    "type": "Var"
+},
+                {
+    "term": "?i1",
+    "type": "Var"
+}
+    ]
+},
+        {
+    "name": "activate",
+    "type": "predicate",
+    "parameters": [
+        {
+    "term": "?i",
+    "type": "Var"
+}
+    ]
+}
+      ]
+    },
+                        {
+      "name": "require-port-inactive",
+      "preconditions": {
+          "type": "and",
+          "left": {
+          "type": "and",
+          "left": {
+          "type": "predicate",
+          "name": "type",
+          "parameters": [{
+          "name": "i",
+          "type": "instance"
+      },{
+          "name": "c",
+          "type": "component"
+      }]
+        },
+          "right": {
+          "type": "and",
+          "left": {
+          "type": "predicate",
+          "name": "installed-require",
+          "parameters": [{
+          "name": "c",
+          "type": "component"
+      },{
+          "name": "p",
+          "type": "port"
+      }]
+        },
+          "right": {
+          "type": "not",
+          "expression": {
+          "type": "predicate",
+          "name": "active",
+          "parameters": [{
+          "name": "p",
+          "type": "port"
+      }]
+        }
+        }
+        }
+        },
+          "right": {
+          "type": "predicate",
+          "name": "instance",
+          "parameters": [{
+          "name": "i",
+          "type": "instance"
+      }]
+        }
+        },
+      "tasks": [
+          {
+    "name": "activateport",
+    "type": "predicate",
+    "parameters": [
+        {
+    "term": "?c",
+    "type": "Var"
+},
+                {
+    "term": "?p",
+    "type": "Var"
+}
+    ]
+},
+        {
+    "name": "activate",
+    "type": "predicate",
+    "parameters": [
+        {
+    "term": "?i",
+    "type": "Var"
+}
+    ]
+}
+      ]
+    },
+                        {
+      "name": "no-require-ports",
+      "preconditions": {
+          "type": "predicate",
+          "name": "instance",
+          "parameters": [{
+          "name": "i",
+          "type": "instance"
+      }]
+        },
+      "tasks": [
+          {
+    "name": "start",
+    "type": "predicate",
+    "parameters": [
+        {
+    "term": "?i",
+    "type": "Var"
+}
+    ]
+}
+      ]
+    }
+        ]
+    },
+                {
+        "name": "activateport",
+        "parameters": [
+            {
+          "name": "c",
+          "type": "component"
+      },
+                        {
+          "name": "p",
+          "type": "port"
+      }
+        ],
+        "methods": [
+            {
+      "name": "port-is-inactive-and-there-is-provide-port-in-active-state-of-some-component",
+      "preconditions": {
+          "type": "and",
+          "left": {
+          "type": "and",
+          "left": {
+          "type": "predicate",
+          "name": "installed-provide",
+          "parameters": [{
+          "name": "c1",
+          "type": "notype"
+      },{
+          "name": "p",
+          "type": "port"
+      }]
+        },
+          "right": {
+          "type": "not",
+          "expression": {
+          "type": "unknown",
+          "class": "ExpressionComparison"
+        }
+        }
+        },
+          "right": {
+          "type": "and",
+          "left": {
+          "type": "predicate",
+          "name": "component",
+          "parameters": [{
+          "name": "c",
+          "type": "component"
+      }]
+        },
+          "right": {
+          "type": "predicate",
+          "name": "port",
+          "parameters": [{
+          "name": "p",
+          "type": "port"
+      }]
+        }
+        }
+        },
+      "tasks": [
+          {
+    "name": "install-configuration",
+    "type": "predicate",
+    "parameters": [
+        {
+    "term": "?c1",
+    "type": "Var"
+}
+    ]
+}
+      ]
+    },
+                        {
+      "name": "port-is-inactive-and-there-is-provide-port-in-running-state-of-some-component",
+      "preconditions": {
+          "type": "and",
+          "left": {
+          "type": "predicate",
+          "name": "running-provide",
+          "parameters": [{
+          "name": "c1",
+          "type": "notype"
+      },{
+          "name": "p",
+          "type": "port"
+      }]
+        },
+          "right": {
+          "type": "and",
+          "left": {
+          "type": "predicate",
+          "name": "component",
+          "parameters": [{
+          "name": "c",
+          "type": "component"
+      }]
+        },
+          "right": {
+          "type": "predicate",
+          "name": "port",
+          "parameters": [{
+          "name": "p",
+          "type": "port"
+      }]
+        }
+        }
+        },
+      "tasks": [
+          {
+    "name": "run-configuration",
+    "type": "predicate",
+    "parameters": [
+        {
+    "term": "?c1",
+    "type": "Var"
+}
+    ]
+}
+      ]
+    }
+        ]
+    },
+                {
+        "name": "install-configuration",
+        "parameters": [
+            {
+          "name": "c",
+          "type": "component"
+      }
+        ],
+        "methods": [
+            {
+      "name": "there-is-free-component-instance",
+      "preconditions": {
+          "type": "and",
+          "left": {
+          "type": "and",
+          "left": {
+          "type": "predicate",
+          "name": "instance",
+          "parameters": [{
+          "name": "i",
+          "type": "instance"
+      }]
+        },
+          "right": {
+          "type": "and",
+          "left": {
+          "type": "predicate",
+          "name": "type",
+          "parameters": [{
+          "name": "i",
+          "type": "instance"
+      },{
+          "name": "c",
+          "type": "component"
+      }]
+        },
+          "right": {
+          "type": "and",
+          "left": {
+          "type": "not",
+          "expression": {
+          "type": "predicate",
+          "name": "installed",
+          "parameters": [{
+          "name": "i",
+          "type": "instance"
+      }]
+        }
+        },
+          "right": {
+          "type": "not",
+          "expression": {
+          "type": "predicate",
+          "name": "running",
+          "parameters": [{
+          "name": "i",
+          "type": "instance"
+      }]
+        }
+        }
+        }
+        }
+        },
+          "right": {
+          "type": "predicate",
+          "name": "component",
+          "parameters": [{
+          "name": "c",
+          "type": "component"
+      }]
+        }
+        },
+      "tasks": [
+          {
+    "name": "install",
+    "type": "predicate",
+    "parameters": [
+        {
+    "term": "?i",
+    "type": "Var"
+}
+    ]
+}
+      ]
+    },
+                        {
+      "name": "no-free-instance",
+      "preconditions": {
+          "type": "predicate",
+          "name": "component",
+          "parameters": [{
+          "name": "c",
+          "type": "component"
+      }]
+        },
+      "tasks": [
+          {
+    "name": "createinstance",
+    "type": "predicate",
+    "parameters": [
+        {
+    "term": "?c",
+    "type": "Var"
+}
+    ]
+},
+        {
+    "name": "install-configuration",
+    "type": "predicate",
+    "parameters": [
+        {
+    "term": "?c",
+    "type": "Var"
+}
+    ]
+}
+      ]
+    }
+        ]
+    },
+                {
+        "name": "install",
+        "parameters": [
+            {
+          "name": "i",
+          "type": "instance"
+      }
+        ],
+        "methods": [
+            {
+      "name": "component-instance-is-not-installed",
+      "preconditions": {
+          "type": "and",
+          "left": {
+          "type": "not",
+          "expression": {
+          "type": "predicate",
+          "name": "installed",
+          "parameters": [{
+          "name": "i",
+          "type": "instance"
+      }]
+        }
+        },
+          "right": {
+          "type": "predicate",
+          "name": "instance",
+          "parameters": [{
+          "name": "i",
+          "type": "instance"
+      }]
+        }
+        },
+      "tasks": [
+          {
+    "name": "activate",
+    "type": "predicate",
+    "parameters": [
+        {
+    "term": "?i",
+    "type": "Var"
+}
+    ]
+}
+      ]
+    },
+                        {
+      "name": "component-instance-is-already-installed-with-at-least-one-provide-port-bound",
+      "preconditions": {
+          "type": "and",
+          "left": {
+          "type": "and",
+          "left": {
+          "type": "predicate",
+          "name": "type",
+          "parameters": [{
+          "name": "i",
+          "type": "instance"
+      },{
+          "name": "c",
+          "type": "component"
+      }]
+        },
+          "right": {
+          "type": "and",
+          "left": {
+          "type": "predicate",
+          "name": "installed",
+          "parameters": [{
+          "name": "i",
+          "type": "instance"
+      }]
+        },
+          "right": {
+          "type": "and",
+          "left": {
+          "type": "predicate",
+          "name": "installed-provide",
+          "parameters": [{
+          "name": "c",
+          "type": "component"
+      },{
+          "name": "p",
+          "type": "port"
+      }]
+        },
+          "right": {
+          "type": "predicate",
+          "name": "bound",
+          "parameters": [{
+          "name": "p",
+          "type": "port"
+      },{
+          "name": "i1",
+          "type": "instance"
+      },{
+          "name": "i",
+          "type": "instance"
+      }]
+        }
+        }
+        }
+        },
+          "right": {
+          "type": "predicate",
+          "name": "instance",
+          "parameters": [{
+          "name": "i",
+          "type": "instance"
+      }]
+        }
+        },
+      "tasks": [
+          {
+    "name": "install-configuration",
+    "type": "predicate",
+    "parameters": [
+        {
+    "term": "?c",
+    "type": "Var"
+}
+    ]
+}
+      ]
+    },
+                        {
+      "name": "component-instance-already-installed-and-free",
+      "preconditions": {
+          "type": "and",
+          "left": {
+          "type": "and",
+          "left": {
+          "type": "predicate",
+          "name": "type",
+          "parameters": [{
+          "name": "i",
+          "type": "instance"
+      },{
+          "name": "c",
+          "type": "component"
+      }]
+        },
+          "right": {
+          "type": "and",
+          "left": {
+          "type": "predicate",
+          "name": "installed",
+          "parameters": [{
+          "name": "i",
+          "type": "instance"
+      }]
+        },
+          "right": {
+          "type": "unknown",
+          "class": "ExpressionForall"
+        }
+        }
+        },
+          "right": {
+          "type": "predicate",
+          "name": "instance",
+          "parameters": [{
+          "name": "i",
+          "type": "instance"
+      }]
+        }
+        },
+      "tasks": [
+          
+      ]
+    }
+        ]
+    },
+                {
+        "name": "run-configuration",
+        "parameters": [
+            {
+          "name": "c",
+          "type": "component"
+      }
+        ],
+        "methods": [
+            {
+      "name": "there-is-free-component-instance",
+      "preconditions": {
+          "type": "and",
+          "left": {
+          "type": "and",
+          "left": {
+          "type": "predicate",
+          "name": "instance",
+          "parameters": [{
+          "name": "i",
+          "type": "instance"
+      }]
+        },
+          "right": {
+          "type": "and",
+          "left": {
+          "type": "predicate",
+          "name": "type",
+          "parameters": [{
+          "name": "i",
+          "type": "instance"
+      },{
+          "name": "c",
+          "type": "component"
+      }]
+        },
+          "right": {
+          "type": "and",
+          "left": {
+          "type": "not",
+          "expression": {
+          "type": "predicate",
+          "name": "installed",
+          "parameters": [{
+          "name": "i",
+          "type": "instance"
+      }]
+        }
+        },
+          "right": {
+          "type": "not",
+          "expression": {
+          "type": "predicate",
+          "name": "running",
+          "parameters": [{
+          "name": "i",
+          "type": "instance"
+      }]
+        }
+        }
+        }
+        }
+        },
+          "right": {
+          "type": "predicate",
+          "name": "component",
+          "parameters": [{
+          "name": "c",
+          "type": "component"
+      }]
+        }
+        },
+      "tasks": [
+          {
+    "name": "install",
+    "type": "predicate",
+    "parameters": [
+        {
+    "term": "?i",
+    "type": "Var"
+}
+    ]
+},
+        {
+    "name": "makerun",
+    "type": "predicate",
+    "parameters": [
+        {
+    "term": "?i",
+    "type": "Var"
+}
+    ]
+}
+      ]
+    },
+                        {
+      "name": "no-free-instance",
+      "preconditions": {
+          "type": "predicate",
+          "name": "component",
+          "parameters": [{
+          "name": "c",
+          "type": "component"
+      }]
+        },
+      "tasks": [
+          {
+    "name": "createinstance",
+    "type": "predicate",
+    "parameters": [
+        {
+    "term": "?c",
+    "type": "Var"
+}
+    ]
+},
+        {
+    "name": "run-configuration",
+    "type": "predicate",
+    "parameters": [
+        {
+    "term": "?c",
+    "type": "Var"
+}
+    ]
+}
+      ]
+    }
+        ]
+    }
+            ]
+        }
+    }
+  }
